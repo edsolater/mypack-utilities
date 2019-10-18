@@ -1,0 +1,19 @@
+{
+  "name": "mypack-utilities",
+  "version": "1.0.0",
+  "description": "文件命名的含义为：操作的主体是什么类型，如 number\\[\\] 属于 number.js",
+  "main": "array.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edsolater/mypack-utilities.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/edsolater/mypack-utilities/issues"
+  },
+  "homepage": "https://github.com/edsolater/mypack-utilities#readme"
+}
