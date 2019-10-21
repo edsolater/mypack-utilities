@@ -89,6 +89,7 @@ const countOccurrences = (arr, countValue) =>
  */
 const deepFlatten = arr =>
   arr.map(val => (Array.isArray(val) ? deepFlatten(val) : val))
+  console.log(deepFlatten([1, [2], [[3], 4], 5]))
 /**
  *
  * @alias deepFlatten

@@ -1,10 +1,28 @@
-const puck = (obj, getProperty) => {
-  if (typeof getProperty === 'function') {
-    return getProperty(object)
-  } else {
-    return object[getProperty]
+/**
+ * 提取对象的值（们）
+ * @example 已通过这些测试用例
+ * pick({a:'hello', b:2}, 'b') // 2
+ * pick('b')({a:'hello', b:2}) // 2
+ * pick({a:'hello', b:2})('b') // 2
+ * pick({a:'hello', b:2}, 'a', 'b') // ['hello', 2]
+ */
+const pick = (...args) => {
+  if (args.length === 1 && typeof args[0] === 'object') {
+    return (...properties) => _pick_ordered(obj, ...properties)
+  } else if (typeof args[0] === 'string') {
+    return obj => _pick_ordered(obj, ...args)
+  } else if (args.length >= 2) {
+    return _pick_ordered(...args)
   }
 }
+const _pick_ordered = (obj, ...properties) => {
+  if (properties.length === 1) {
+    return _pick_basic(obj, properties[0])
+  } else {
+    return properties.map(property => _pick_basic(obj, property))
+  }
+}
+const _pick_basic = (obj, property) => obj[property]
 
 /**
  * TODO: 暂时没看懂
@@ -44,3 +62,7 @@ const unflattenObject = obj =>
     } else acc[k] = obj[k]
     return acc
   }, {})
+
+const obj = { a: 'hello', b: 'wor' }
+console.log(pick(obj, 'b'))
+console.log(3)

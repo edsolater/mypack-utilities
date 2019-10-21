@@ -18,7 +18,34 @@ export const isEven = val => isInt(val) && isInt(val % 2 === 0)
 /**
  * @order 2
  */
-export const is = shouldValue => val => val === shouldValue // TOFIX: 如此写不够灵活
+// export const is = shouldValue => val => val === shouldValue // TOFIX: 如此写不够灵活
+export const is = (...args) => {
+  const callbacks = args.map(val => {
+    if (typeof val === 'string') {
+      switch (val.toLowerCase()) {
+        case 'true': {
+          return isTrue
+        }
+        case 'trusy': {
+          return isTrusy
+        }
+        case 'false': {
+          return isFalse
+        }
+        default: {
+          throw Error(`haven't define a judger role for this value: ${val}`)
+        }
+      }
+    } else if (typeof val === 'function') {
+      return val
+    } else {
+      throw Error(
+        `can't recognize value type other than string or function, value is: ${val}`
+      )
+    }
+  })
+  return pipe(callbacks)
+}
 /**
  * TODO 我觉得可以再灵活点，overload它
  * 检查数据类型
@@ -45,7 +72,7 @@ const typeIs = (type, val) =>
  * 比较2个值，看是否符合条件
  *
  */
- const areEqualRecursively = (x, y) => {
+const areEqualRecursively = (x, y) => {
   if (Object.is(x, y)) return true
   if (x instanceof Date && y instanceof Date) return x.getTime() === y.getTime()
   if (!x || !y || (typeof x !== 'object' && typeof y !== 'object'))
@@ -70,11 +97,11 @@ const typeIs = (type, val) =>
 export const pipe = (...fns) => {
   fns = fns.flat()
   if (fns.length === 0) {
-    return any => any
+    return any => any //为空时默认返回的函数
   } else if (fns.length === 1) {
-    return fns[0]
+    return fns[0] // 只有唯一函数值时默认返回的函数
   } else {
-    return fns.reduce((fn1, fn2) => (...args) => fn2(fn1(...args)))
+    return fns.reduce((fn1, fn2) => (...args) => fn2(fn1(...args))) 
   }
 }
 /**
@@ -118,7 +145,7 @@ const timeTaken = (fn, ...args) => {
  * 缓存函数
  */
 const memorize = fn => {
-  if (fn.cache) return fn
+  if (fn.cache) return fn // 已经是缓存函数了，就直接返回
   function cachedFn(...args) {
     const cacheKey = JSON.stringify(args)
     const cache = cachedFn.cache
@@ -134,7 +161,7 @@ const memorize = fn => {
 }
 
 /**
- * 只调用一次的函数
+ * 只 调用一次的函数
  */
 const once = fn =>
   function once(...args) {
@@ -145,3 +172,22 @@ const once = fn =>
       return fn(...args)
     }
   }
+
+/**
+ * 固定函数的部分参数
+ * @todo
+ * @example
+ * fixParam(add, [3, 1], [4, 2]) = num => add(num, 3, 4)
+ */
+const fixParam = (fn,...valueIdx)=> {
+ return (...args)=>{
+   valueIdx.sort((x,y)=> (x[1] || 1)-y[1])
+   valueIdx.forEach(([param, idx])=>{
+     args.splice()
+   })
+ }
+}//这个逻辑没写完
+
+const formatParam = (...args) =>{
+  args = args.flat()
+}
