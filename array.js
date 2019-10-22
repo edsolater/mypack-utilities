@@ -80,29 +80,48 @@ const countOccurrences = (arr, countValue) =>
     (acc, currentVal) => (currentVal === countValue ? acc + 1 : acc),
     0
   )
+const no = val => val === undefined || val === null
+const exist = val => val !== undefined && val !== null
 
 /**
  *
  * 递归式地扁平化数组
+ * - mutate 会深改变原数组
+ * @from Array
+ * @to Array
  * @example
- * deepFlatten([1, [2], [[3], 4], 5]); // [1,2,3,4,5]
+ * flatten([1, [2], [[3], 4], 6, 'hello']) // [ 1, 2, 3, 4, 6, "hello" ]
  */
-const deepFlatten = arr =>
-  arr.map(val => (Array.isArray(val) ? deepFlatten(val) : val))
-  console.log(deepFlatten([1, [2], [[3], 4], 5]))
-/**
- *
- * @alias deepFlatten
- */
-const flattenRecursively = deepFlatten
 
-/**
- *
- * 指定深度地扁平化数组
- * @example
- * flatten([1, [2], [[3], 4], 5], 3); // [1,2,3,4,5]
- */
-const flatten = (arr, depth = 1) => arr.flat(depth)
+//  没写完
+// const flatten = (...args) =>{
+//   if (regs.length === 1) {
+//     const val = args[0]
+//     if ()
+//   }
+// }
+const flatten_ordered = (arr, config) => {
+  if (no(config)) {
+    return flatten_basic_noConfig(arr)
+  } else {
+    if (exist(config.depth)) return flatten_basic_with_depth(arr, { depth })
+
+  }
+}
+const flatten_basic_noConfig = arr => {
+  let i = 0
+  while (arr[i] !== undefined) {
+    if (Array.isArray(arr[i])) {
+      arr.splice(i, 1, ...flatten_basic_noConfig(arr[i]))
+    } else {
+      i += 1
+    }
+  }
+  return arr
+}
+const flatten_basic_with_depth = (arr, { depth }) => {
+  return arr.flat(depth)
+}
 
 /**
  *
