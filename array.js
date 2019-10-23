@@ -82,47 +82,95 @@ const countOccurrences = (arr, countValue) =>
   )
 const no = val => val === undefined || val === null
 const exist = val => val !== undefined && val !== null
-
 /**
- *
- * 递归式地扁平化数组
- * - mutate 会深改变原数组
- * @from Array
- * @to Array
+ * @returns {string}
  * @example
- * flatten([1, [2], [[3], 4], 6, 'hello']) // [ 1, 2, 3, 4, 6, "hello" ]
+ * type(new Date()) // "Date"
+ * type('hello') // "string"
+ * type(1) // "number"
  */
-
-//  没写完
-// const flatten = (...args) =>{
-//   if (regs.length === 1) {
-//     const val = args[0]
-//     if ()
-//   }
-// }
-const flatten_ordered = (arr, config) => {
-  if (no(config)) {
-    return flatten_basic_noConfig(arr)
+const type = val => {
+  if (typeof val !== 'object') {
+    return typeof val
   } else {
-    if (exist(config.depth)) return flatten_basic_with_depth(arr, { depth })
-
+    return Object.prototype.toString.call(val).slice(8, -1)
   }
 }
-const flatten_basic_noConfig = arr => {
+console.log(type({}))
+const utilityFactory = (config = {}) => {
+  //TODO: 只是有这个想法，离真正做出来还差得远呢
+}
+//#region utility: faltten
+/**
+ * 递归式地扁平化数组
+ * - mutate 会深改变原数组
+ *
+ * 可调用自身
+ * @inputType Array
+ * @outputType Array
+ * @example
+ * flatten([1, [2], [[3], 4], 6, 'hello']) // [ 1, 2, 3, 4, 6, "hello" ]
+ * flatten([1, [2], [[[[[3]]]], undefined, [[[4]]]], 6, 'hello'], { depth: 2 }) //[ 1, 2, [ [ [ 3 ] ] ], undefined, [ [ 4 ] ], 6, "hello" ]
+ * flatten([1, [2], [[[[3]]], [undefined], [[4]]], 6, 'hello'], {ignoreUndefined: true}) // [ 1, 2, 3, 4, 6, "hello" ]
+ *
+ */
+const flatten = (...args) => {
+  if (args.length === 1) {
+    if (type(args[0]) === 'Array') {
+      const arr = args[0]
+      return flatten_config(arr)
+    } else if (type(args[0] === 'Object')) {
+      const config = args[0]
+      return (...arr) => flatten_config(arr.flat(), config)
+    }
+  } else if (args.length >= 2) {
+    const config = args.pop()
+    const arr = args.flat()
+    return flatten_config(arr, config)
+  }
+}
+/**
+ * 带配置对象的 flatten
+ * 可依据判断条件，调用_core或_marginal
+ */
+const flatten_config = (arr, config) => {
+  if (no(config)) {
+    return flatten_core(arr)
+  } else {
+    const { depth, ignoreUndefined } = config
+    if (ignoreUndefined) return flatten_core(arr, { ignoreUndefined })
+    if (depth) return flatten_marginal(arr, { depth })
+  }
+}
+/**
+ * flatten 的核心算法
+ */
+const flatten_core = (arr = [], coreConfig = {}) => {
+  const { ignoreUndefined } = coreConfig //涉及核心的配置
+  const targetArray = ignoreUndefined ? arr.filter(Boolean) : arr
   let i = 0
-  while (arr[i] !== undefined) {
-    if (Array.isArray(arr[i])) {
-      arr.splice(i, 1, ...flatten_basic_noConfig(arr[i]))
+  while (targetArray[i] !== undefined) {
+    if (Array.isArray(targetArray[i])) {
+      targetArray.splice(i, 1, ...flatten_core(targetArray[i], coreConfig))
     } else {
       i += 1
     }
   }
-  return arr
+  return targetArray
 }
-const flatten_basic_with_depth = (arr, { depth }) => {
+/**
+ * marginal 后缀专门处理各种边际效应
+ */
+const flatten_marginal = (arr, marginalConfig = {}) => {
+  const { depth } = marginalConfig
   return arr.flat(depth)
 }
-
+// console.log(
+//   flatten([1, [2], [[[[3]]], [undefined], [[4]]], 6, 'hello'], {
+//     ignoreUndefined: true
+//   })
+// )
+//#endregion
 /**
  *
  * 查找两个数组之间的差异项
