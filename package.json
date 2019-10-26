@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/edsolater/mypack-utilities/issues"
   },
-  "homepage": "https://github.com/edsolater/mypack-utilities#readme"
+  "homepage": "https://github.com/edsolater/mypack-utilities#readme",
+  "dependencies": {
+    "@types/lodash": "^4.14.144",
+    "lodash": "^4.17.15",
+    "typescript": "^3.6.4"
+  }
 }
