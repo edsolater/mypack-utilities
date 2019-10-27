@@ -37,7 +37,7 @@ function addTarget(util, preTarget1, preTarget2) {
 }
 
 //TODO: 总觉得要抽象，但又不知该抽象什么
-function config(util, preConfig) {
+function mergeConfig(util, preConfig) {
   if (util.isUtil !== true) throw Error(`${util} is not an util`)
   if (util.level === 1) {
     const newUtil = (tar, config = {}) => util(tar, { ...preConfig, ...config })
@@ -104,20 +104,20 @@ function checkLegalParam({
   }
 }
 
-function aBinaryUtil(tar1, tar2, config) {
+function binaryUtilTemplate(tar1, tar2, config) {
   checkLegalParam({
     targets: [tar1, tar2],
     config: config,
-    utility: aBinaryUtil
+    utility: binaryUtilTemplate
   })
   return config
 }
 
-addDescription(aBinaryUtil, {
-  targetType: ['number', 'number'],
-  outputType: 'number'
+addDescription(binaryUtilTemplate, {
+  targetType: ['number', 'number'], // TODO：这里并没有考虑overload的情况，是不恰当的
+  outputType: 'number' // TODO：这里并没有考虑overload的情况，是不恰当的
 })
-console.log(config(aBinaryUtil, { hello: 'ye3s' })(2, 2, { world: 'hh' }))
+console.log(addTarget(binaryUtilTemplate, 2)( 2, { world: 'hh' }))
 
 /* 
 utility函数的调用的参数一定是运行时完全的且数量固定，不然debug/单元测试困难。
