@@ -8,9 +8,9 @@ const type = val => {
 }
 /*region 额外的功能模块
 还没想好怎么加
-可有memorize功能模块、async功能模块（最终执行是异步的）
+可有memorize功能模块、async功能模块（最终运算时是异步的）
 endregion */
-const setConfig = (util, preConfig={}) =>
+const setConfig = (util, preConfig = {}) =>
   Object.assign(
     (tar, config = {}) => util(tar, { ...config, ...preConfig }),
     util,
@@ -48,7 +48,12 @@ const addTarget = (util, ...preTargets) => {
     }
   )
 }
-const utilCreator = ({ utilName = 'unknown', utilCode, utilLevel }) => {
+const utilCreator = ({
+  utilName = 'unknown',
+  plugin = [],
+  utilCode,
+  utilLevel
+}) => {
   const anUtil = Object.values(utilCode)[0] // 随便找一个Util函数的某个类型的定义，反正传参数量都应该是一样的。
   const targetNumber = anUtil.length || Infinity
   return Object.assign(
@@ -57,7 +62,7 @@ const utilCreator = ({ utilName = 'unknown', utilCode, utilLevel }) => {
       const trueTargets = params.slice(0, targetNumber)
       const codeKey =
         targetNumber === Infinity
-          ? type(trueTargets[0] /* 随便一个 */)
+          ? type(trueTargets[0] /* 随便选一个 */)
           : trueTargets.map(type).join(',')
       try {
         return utilCode[codeKey](
@@ -69,9 +74,12 @@ const utilCreator = ({ utilName = 'unknown', utilCode, utilLevel }) => {
     },
     {
       utilName,
-      utilLevel: utilLevel || targetNumber, //值不变，生产环境下用不着
-      isBinary: utilLevel === 1 || targetNumber === 1,
-      targetNumber: utilLevel || targetNumber, //值会变，生产环境下会使用
+      utilLevel: utilLevel || targetNumber, //utilLevel值不变，生产环境下用不着
+      targetNumber: utilLevel || targetNumber, //targetNumber值会变，生产环境下会使用
+      isUnary: utilLevel === 1 || targetNumber === 1,
+      isBinary: utilLevel === 2 || targetNumber === 2,
+      isTrinary: utilLevel === 3 || targetNumber === 3,
+      isInfinary: utilLevel === Infinity || targetNumber === Infinity,
       targetInputType: Object.keys(utilCode),
       creator: utilCreator,
       addTarget(...targets) {
@@ -82,7 +90,10 @@ const utilCreator = ({ utilName = 'unknown', utilCode, utilLevel }) => {
       },
       exec() {
         return this()
-      }
+      },
+      async execAsync() {
+        return await this()
+      } //可能并不需要async模块
     }
   )
 }
@@ -126,6 +137,7 @@ const trinaryExample = utilCreator({
 const infinaryExample = utilCreator({
   // utilLevel: 2, //不显示地定义也会自动推断的
   utilName: 'sum',
+  plugin: ['memorize'],
   utilCode: {
     'number': (...nums) => nums.reduce((acc, x) => acc + x, 0)
   }

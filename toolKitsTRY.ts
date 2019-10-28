@@ -22,7 +22,7 @@ function addTarget<T>(fn: UtilityFunction<T>, ...targets: T[]) {
   return fn
 }
 
-const sum: BinaryUtilityFunction<T> = (a: T, b) => a + b
+const sum: BinaryUtilityFunction<number> = (a, b) => a + b //TODO 怎么把a的类型传进去
 sum.targetCount = 2
 sum.targetType1 = 'Array'
 sum.targetType2 = 'Array'
