@@ -1,3 +1,5 @@
+const isFalsy = val => !Boolean(val)
+
 /**
  * 布尔全等判断
  * @example
@@ -96,80 +98,125 @@ const type = val => {
     return Object.prototype.toString.call(val).slice(8, -1)
   }
 }
-console.log(type({}))
-const utilityFactory = (config = {}) => {
-  //TODO: 只是有这个想法，离真正做出来还差得远呢
+const isObjectExeceptArray = val =>
+  typeof val === 'object' && !Array.isArray(val)
+const isObject = val => typeof val === 'object'
+/**
+ * @targetCount 1
+ */
+const isConfig = (obj, { strict } = {}) => {
+  if (isFalsy(strict)) {
+    return isObjectExeceptArray(obj)
+  } else {
+    if (obj.type === 'config') {
+      return true
+    }
+    return false
+  }
 }
+const isGroupArray = val =>
+  Array.isArray(val) && (val.type === 'group' || val.type !== 'target')
+const isTargetArray = val => Array.isArray(val) && val.type === 'target'
+const turnTargetArray = val => {
+  if (typeof val === 'object') val.type = 'target'
+  return val
+}
+const mergeObject = (object1 = {}, object2 = {}, config = {}) => {
+  const { mode = 'hard' } = config
+  if (mode === 'hard') {
+    return { ...object1, ...object2 }
+  } else if (mode === 'soft') {
+    const newObj = { ...object1 }
+    Object.entries(object2).forEach(([key, value]) => {
+      if (isTargetArray(newObj[key])) {
+        newObj[key] = [newObj[key], value]
+      } else if (isGroupArray(newObj[key])) {
+        newObj[key].push(value)
+      } else {
+        newObj[key] = value
+      }
+    })
+  }
+}
+const mergeArgsConfig = (newArgs = [], config1) => {
+  const lastArg = newArgs[newArgs.length - 1]
+  if (isConfig(lastArg)) {
+    newArgs[newArgs.length - 1] = mergeObject(lastArg, config1, {
+      mode: 'soft'
+    })
+  } else {
+    newArgs.push(config1)
+  }
+  return newArgs
+}
+const addConfig = (fn, config) => {
+  if (type(fn) === 'function') {
+  }
+}
+
 //#region utility: faltten
 /**
  * 递归式地扁平化数组
  * - mutate 会深改变原数组
  *
- * 可调用自身
+ * @targetCount 1
  * @inputType Array
  * @outputType Array
  * @example
  * flatten([1, [2], [[3], 4], 6, 'hello']) // [ 1, 2, 3, 4, 6, "hello" ]
  * flatten([1, [2], [[[[[3]]]], undefined, [[[4]]]], 6, 'hello'], { depth: 2 }) //[ 1, 2, [ [ [ 3 ] ] ], undefined, [ [ 4 ] ], 6, "hello" ]
- * flatten([1, [2], [[[[3]]], [undefined], [[4]]], 6, 'hello'], {ignoreUndefined: true}) // [ 1, 2, 3, 4, 6, "hello" ]
+ * flatten([1, [2], [[[[3]]], [undefined], [[4]]], 6, 'hello'], { ignoreUndefined: true }) // [ 1, 2, 3, 4, 6, "hello" ]
  *
  */
 const flatten = (...args) => {
-  if (args.length === 1) {
-    if (type(args[0]) === 'Array') {
-      const arr = args[0]
-      return flatten_config(arr)
-    } else if (type(args[0] === 'Object')) {
-      const config = args[0]
-      return (...arr) => flatten_config(arr.flat(), config)
+  //使用收集，会带来过分的自由度
+  const config = isConfig(args[args.length - 1]) ? args.pop() : undefined
+  const targets = args
+  if (targets.length === 0) {
+    return (...args) => flatten(mergeArgsConfig(args, config))
+  } else if (targets.length === 1) {
+    const targetArray = targets[0]
+    return _flatten_core(targetArray, config)
+  }
+}
+
+Object.assign(flatten, {
+  targetArray: 1,
+  inputType: 'Array',
+  outputType: 'Array'
+})
+
+const _flatten_core = (targetArray, config = {}) => {
+  const { depth, ignoreUndefined, mutable, immutable = !mutable } = config
+  if (depth) return targetArray.flat(depth)
+
+  const arr = ignoreUndefined ? targetArray.filter(Boolean) : targetArray
+
+  //#region flatten算法的核心
+  if (immutable) {
+    return [].concat(
+      ...arr.map(v => (type(v) === 'Array' ? _flatten_core(v, config) : v))
+    )
+  }
+  
+  if (mutable) {
+    let i = 0
+    while (arr[i] !== undefined) {
+      if (type(arr[i]) === 'Array') {
+        arr.splice(i, 1, ..._flatten_core(arr[i], config))
+      } else {
+        i += 1
+      }
     }
-  } else if (args.length >= 2) {
-    const config = args.pop()
-    const arr = args.flat()
-    return flatten_config(arr, config)
+    return arr
   }
+  //#endregion
 }
-/**
- * 带配置对象的 flatten
- * 可依据判断条件，调用_core或_marginal
- */
-const flatten_config = (arr, config) => {
-  if (no(config)) {
-    return flatten_core(arr)
-  } else {
-    const { depth, ignoreUndefined } = config
-    if (ignoreUndefined) return flatten_core(arr, { ignoreUndefined })
-    if (depth) return flatten_marginal(arr, { depth })
-  }
-}
-/**
- * flatten 的核心算法
- */
-const flatten_core = (arr = [], coreConfig = {}) => {
-  const { ignoreUndefined } = coreConfig //涉及核心的配置
-  const targetArray = ignoreUndefined ? arr.filter(Boolean) : arr
-  let i = 0
-  while (targetArray[i] !== undefined) {
-    if (Array.isArray(targetArray[i])) {
-      targetArray.splice(i, 1, ...flatten_core(targetArray[i], coreConfig))
-    } else {
-      i += 1
-    }
-  }
-  return targetArray
-}
-/**
- * marginal 后缀专门处理各种边际效应
- */
-const flatten_marginal = (arr, marginalConfig = {}) => {
-  const { depth } = marginalConfig
-  return arr.flat(depth)
-}
-// console.log(
-//   flatten([1, [2], [[[[3]]], [undefined], [[4]]], 6, 'hello'], {
-//     ignoreUndefined: true
-//   })
-// )
+console.log(
+  flatten([1, [2], [[[[3]]], [undefined], [[4]]], 6, 'hello'], {
+    ignoreUndefined: true
+  })
+)
 //#endregion
 /**
  *
