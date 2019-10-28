@@ -101,7 +101,7 @@ export const pipe = (...fns) => {
   } else if (fns.length === 1) {
     return fns[0] // 只有唯一函数值时默认返回的函数
   } else {
-    return fns.reduce((fn1, fn2) => (...args) => fn2(fn1(...args))) 
+    return fns.reduce((fn1, fn2) => (...args) => fn2(fn1(...args)))
   }
 }
 /**
@@ -179,15 +179,24 @@ const once = fn =>
  * @example
  * fixParam(add, [3, 1], [4, 2]) = num => add(num, 3, 4)
  */
-const fixParam = (fn,...valueIdx)=> {
- return (...args)=>{
-   valueIdx.sort((x,y)=> (x[1] || 1)-y[1])
-   valueIdx.forEach(([param, idx])=>{
-     args.splice()
-   })
- }
-}//这个逻辑没写完
+const fixParam = (fn, ...valueIdx) => {
+  return (...args) => {
+    valueIdx.sort((x, y) => (x[1] || 1) - y[1])
+    valueIdx.forEach(([param, idx]) => {
+      args.splice()
+    })
+  }
+} //这个逻辑没写完
 
-const formatParam = (...args) =>{
+const formatParam = (...args) => {
   args = args.flat()
 }
+
+/**
+ * 解绑(含有this的method)
+ * @param {Function} objectMethod
+ * @example
+ * const slice = disassembly(Array.prototype.slice)// [3,4,5]
+ */
+const unbind = objectMethod => (target, ...params) =>
+  objectMethod.call(target, ...params)

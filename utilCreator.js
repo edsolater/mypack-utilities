@@ -10,6 +10,29 @@ const type = val => {
 还没想好怎么加
 可有memorize功能模块、async功能模块（最终运算时是异步的）
 endregion */
+//#region 额外的功能模块
+/**
+ * 缓存功能
+ */
+const plugin_memorize = util => {
+  if (util.cache) return util // 已经是缓存函数了，因此直接返回即可
+  const cachedFn = (...args) => {
+    const cacheKey = JSON.stringify(args)
+    const cache = cachedFn.cache
+    if (cache.has(cacheKey)) {
+      return cache.get(cacheKey)
+    } else {
+      cache.set(cacheKey, util(...args))
+      return cache.get(cacheKey)
+    }
+  }
+  cachedFn.cache = new Map()
+  return cachedFn
+}
+const pluginList = {
+  memorize: plugin_memorize
+}
+//#endregion
 const setConfig = (util, preConfig = {}) =>
   Object.assign(
     (tar, config = {}) => util(tar, { ...config, ...preConfig }),
@@ -48,15 +71,11 @@ const addTarget = (util, ...preTargets) => {
     }
   )
 }
-const utilCreator = ({
-  utilName = 'unknown',
-  plugin = [],
-  utilCode,
-  utilLevel
-}) => {
+const utilCreator = config => {
+  const { utilCode, plugin = [] } = config
   const anUtil = Object.values(utilCode)[0] // 随便找一个Util函数的某个类型的定义，反正传参数量都应该是一样的。
   const targetNumber = anUtil.length || Infinity
-  return Object.assign(
+  const outputUtil = Object.assign(
     (...params) => {
       const configObject = params[targetNumber]
       const trueTargets = params.slice(0, targetNumber)
@@ -73,13 +92,19 @@ const utilCreator = ({
       }
     },
     {
-      utilName,
-      utilLevel: utilLevel || targetNumber, //utilLevel值不变，生产环境下用不着
-      targetNumber: utilLevel || targetNumber, //targetNumber值会变，生产环境下会使用
-      isUnary: utilLevel === 1 || targetNumber === 1,
-      isBinary: utilLevel === 2 || targetNumber === 2,
-      isTrinary: utilLevel === 3 || targetNumber === 3,
-      isInfinary: utilLevel === Infinity || targetNumber === Infinity,
+      // 直接设定得到
+      utilName: config.utilName || 'unknown',
+      plugin,
+      isHighOrderFunction: config.isHighOrderFunction || false //特殊标记
+    },
+    {
+      // 由计算得到
+      utilLevel: targetNumber, //utilLevel值不变，生产环境下用不着
+      targetNumber: targetNumber, //targetNumber值会变，生产环境下会使用
+      isUnary: targetNumber === 1,
+      isBinary: targetNumber === 2,
+      isTrinary: targetNumber === 3,
+      isInfinary: targetNumber === Infinity,
       targetInputType: Object.keys(utilCode),
       creator: utilCreator,
       addTarget(...targets) {
@@ -96,8 +121,11 @@ const utilCreator = ({
       } //可能并不需要async模块
     }
   )
+  return Object.assign(
+    plugin.reduce((acc, pluginName) => pluginList[pluginName](acc), outputUtil),
+    outputUtil
+  )
 }
-
 /******************* 使用示例 *******************/
 const unaryExample = utilCreator({
   utilName: 'decompose',
