@@ -65,7 +65,7 @@ export const is = (...args) => {
  * typeIs(Boolean, new Boolean(true)); // true
  */
 const typeIs = (type, val) =>
-  ![, null].includes(val) && val.constructor === type // 没懂
+  ![, null].includes(val) && val.constructor === type // 抄来的没懂
 
 /** comparer
  * -------------------------------
