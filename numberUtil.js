@@ -1,3 +1,4 @@
+import {pick} from './object'
 /**
  * 取平均值
  * @param {number[]} nums
@@ -6,8 +7,14 @@
  * average(1, 2, 3); // 2
  * average([1, 2, 3]); // 2
  */
-const average = (...nums) =>
-  nums.filter(Boolean).reduce((acc, val) => acc + val, 0) / nums.length
+const average = utilCreator({
+  utilName: 'average',
+  utilCode: {
+    'number': (...nums) =>
+      nums.filter(Boolean).reduce((acc, val) => acc + val, 0) / nums.length
+  }
+})
+
 
 /**
  * 取平均值（带操作，单只能以数组形式传递）
@@ -31,4 +38,5 @@ const random = (length = 10, range = [1, 10]) =>
 
 const sumTwo = (x, y) => Number(x) + Number(y)
 const sum = (...nums) => nums.reduce(sumTwo)
-console.log(average(3,4,5,2,undefined,4))
+console.log(3)
+console.log(average(3, 4, 5, 2, 4))

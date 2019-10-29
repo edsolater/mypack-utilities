@@ -8,14 +8,15 @@ type ConfigObj = Object
 
 interface Util {
   (...params: any[]): UtilOutputType
-  utilName: string
-  utilLevel: number //utilLevel值不变，生产环境下用不着
   targetNumber: number //targetNumber值会变，生产环境下会使用
-  isUnary: Boolean
-  isBinary: Boolean
-  isTrinary: Boolean
-  isInfinary: Boolean
-  targetInputType: string[]
+  readonly utilName: string
+  readonly utilLevel: number //utilLevel值不变，生产环境下用不着
+  readonly isUnary: Boolean
+  readonly isBinary: Boolean
+  readonly isTrinary: Boolean
+  readonly isInfinary: Boolean
+  readonly targetInputType: string[]
+
   creator: UtilCreator
   addTarget(...targets: Target[]): TargetedUtil
   setConfig(configObj: ConfigObj): ConfigedUtil
@@ -35,7 +36,13 @@ interface TargetedUtil extends Util {
 }
 
 interface UtilCreator {
-  (config: { utilName: string; plugin?: ('memorize' | 'once')[] }): Util
+  (config: {
+    utilName: string
+    plugin?: ('memorize' | 'once')[]
+    utilCode: {
+      [propName: string]: function
+    }
+  }): Util
 }
 
-declare const utilCreator: UtilCreator
+export declare const utilCreator: UtilCreator

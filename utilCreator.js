@@ -71,7 +71,7 @@ const addTarget = (util, ...preTargets) => {
     }
   )
 }
-const utilCreator = config => {
+export const utilCreator = config => {
   const { utilCode, plugin = [] } = config
   const anUtil = Object.values(utilCode)[0] // 随便找一个Util函数的某个类型的定义，反正传参数量都应该是一样的。
   const targetNumber = anUtil.length || Infinity
@@ -95,12 +95,11 @@ const utilCreator = config => {
       // 直接设定得到
       utilName: config.utilName || 'unknown',
       plugin,
-      isHighOrderFunction: config.isHighOrderFunction || false //特殊标记
-    },
-    {
+      isHighOrderFunction: config.isHighOrderFunction || false, //特殊标记
+
       // 由计算得到
-      utilLevel: targetNumber, //utilLevel值不变，生产环境下用不着
       targetNumber: targetNumber, //targetNumber值会变，生产环境下会使用
+      utilLevel: targetNumber, //utilLevel值不变，生产环境下用不着
       isUnary: targetNumber === 1,
       isBinary: targetNumber === 2,
       isTrinary: targetNumber === 3,

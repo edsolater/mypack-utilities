@@ -9,7 +9,7 @@
  * pick({a:'hello', b:2})('b') // 2
  * pick({a:'hello', b:2}, 'a', 'b') // ['hello', 2]
  */
-const pick = (...args) => {
+export const pick = (...args) => {
   if (args.length === 1 && typeof args[0] === 'object') {
     return (...properties) => _pick_ordered(obj, ...properties)
   } else if (typeof args[0] === 'string') {
