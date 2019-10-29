@@ -45,4 +45,15 @@ interface UtilCreator {
   }): Util
 }
 
+/**
+ * 创建工具，用于创建工具函数
+ * @example
+ * const unaryExample = utilCreator({
+ *   utilName: 'decompose',
+ *   utilCode: {
+ *     'string': (x, config = {}) => [...x],
+ *     'Array': (x, config = {}) => [3]
+ *   }
+ * })
+ */
 export declare const utilCreator: UtilCreator

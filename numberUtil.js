@@ -1,4 +1,4 @@
-import {pick} from './object'
+import { utilCreator } from './utilCreator.js'
 /**
  * 取平均值
  * @param {number[]} nums
@@ -14,7 +14,6 @@ const average = utilCreator({
       nums.filter(Boolean).reduce((acc, val) => acc + val, 0) / nums.length
   }
 })
-
 
 /**
  * 取平均值（带操作，单只能以数组形式传递）

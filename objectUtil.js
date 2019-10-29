@@ -2,7 +2,7 @@
  * 提取对象的值（们）
  * _ordered 后缀，代表方法的的参数在意义上顺序是固定的
  * _basic 后缀，代表此方法的最底层实现（完全不考虑任何参数的多态性）
- * 
+ *
  * @example 已通过这些测试用例
  * pick({a:'hello', b:2}, 'b') // 2
  * pick('b')({a:'hello', b:2}) // 2
@@ -67,5 +67,6 @@ const unflattenObject = obj =>
   }, {})
 
 const obj = { a: 'hello', b: 'wor' }
-console.log(pick(obj, 'b'))
-console.log(3)
+
+export const pluck = (obj, { propNames = [] }) =>
+  propNames.map(propName => obj[propName])
