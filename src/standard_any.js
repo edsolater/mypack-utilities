@@ -1,12 +1,34 @@
 import { utilCreator } from './_utilCreator.js'
 
 export const isFalsy = utilCreator({
-  utilName: 'isFalsy',
-  isJudger: true,
-  utilCode: {
-    'any': tar => !Boolean(tar)
-  }
+    utilName: 'isFalsy',
+    isJudger: true,
+    utilCode: {
+        'any': val => !Boolean(val)
+    }
 })
+export const isTrusy = utilCreator({
+    utilName: 'isTrusy',
+    isJudger: true,
+    utilCode: {
+        'any': val => Boolean(val)
+    }
+})
+export const isUndefined = utilCreator({
+    utilName: 'isUndefined',
+    isJudger: true,
+    utilCode: {
+        'any': val => val === undefined
+    }
+})
+export const isDefined = utilCreator({
+    utilName: 'isDefined',
+    isJudger: true,
+    utilCode: {
+        'any': val => val !== undefined
+    }
+})
+
 
 /**
  * 包装成数组
@@ -17,10 +39,10 @@ export const isFalsy = utilCreator({
  * castArray(1); // [1]
  */
 const castArray = utilCreator({
-  utilName: 'castArray',
-  utilCode: {
-    'any': tar => (Array.isArray(tar) ? tar : [tar])
-  }
+    utilName: 'castArray',
+    utilCode: {
+        'any': tar => (Array.isArray(tar) ? tar : [tar])
+    }
 })
 
 /**
@@ -31,22 +53,22 @@ const castArray = utilCreator({
  * type(1) // "number"
  */
 export const type = utilCreator({
-  utilName: 'type',
-  utilCode: {
-    'any': val => {
-      if (typeof val === 'object') {
-        return Object.prototype.toString.call(val).slice(8, -1)
-      } else {
-        return typeof val
-      }
+    utilName: 'type',
+    utilCode: {
+        'any': val => {
+            if (typeof val === 'object') {
+                return Object.prototype.toString.call(val).slice(8, -1)
+            } else {
+                return typeof val
+            }
+        }
     }
-  }
 })
 
 const isObject = utilCreator({
-  utilName:'isObject',
-  isJudger: true,
-  utilCode:{
-    'any': val => typeof val === 'object'
-  }
+    utilName: 'isObject',
+    isJudger: true,
+    utilCode: {
+        'any': val => typeof val === 'object'
+    }
 })

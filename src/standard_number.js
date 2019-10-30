@@ -10,8 +10,7 @@ import { utilCreator } from './_utilCreator.js'
 const average = utilCreator({
   utilName: 'average',
   utilCode: {
-    'number[]': (...nums) =>
-      nums.filter(Boolean).reduce((acc, val) => acc + val, 0) / nums.length
+    'number[]': (...nums) => nums.filter(Boolean).reduce((acc, val) => acc + val, 0) / nums.length
   }
 })
 
@@ -31,9 +30,7 @@ const averageBy = (targetArray, mapper) => targetArray.map(mapper)
  * random() // [2,4,5,2,6,7,8,0,2,6]
  */
 const random = (length = 10, range = [1, 10]) =>
-  Array.from({ length }, () =>
-    Math.floor(Math.random() * (range[1] - range[0] + 1) + range[0])
-  )
+  Array.from({ length }, () => Math.floor(Math.random() * (range[1] - range[0] + 1) + range[0]))
 
 const sumTwo = (x, y) => Number(x) + Number(y)
 const sum = (...nums) => nums.reduce(sumTwo)
@@ -49,7 +46,7 @@ const approximatelyEqual = utilCreator({
   utilName: 'approximatelyEqual',
   utilDepth: 2,
   isJudger: true,
-  utilCode:{
+  utilCode: {
     'number,number': (v1 = 1, v2 = 1, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon
   }
 })
