@@ -39,3 +39,17 @@ const sumTwo = (x, y) => Number(x) + Number(y)
 const sum = (...nums) => nums.reduce(sumTwo)
 console.log(3)
 console.log(average(3, 4, 5, 2, 4))
+
+/**
+ * 约等于
+ * @example
+ * approximatelyEqual(Math.PI / 2.0, 1.5708); // true
+ */
+const approximatelyEqual = utilCreator({
+  utilName: 'approximatelyEqual',
+  utilDepth: 2,
+  isJudger: true,
+  utilCode:{
+    'number,number': (v1 = 1, v2 = 1, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon
+  }
+})

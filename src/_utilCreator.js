@@ -34,17 +34,11 @@ const pluginList = {
 }
 //#endregion
 const setConfig = (util, preConfig = {}) =>
-  Object.assign(
-    (tar, config = {}) => util(tar, { ...config, ...preConfig }),
-    util,
-    {
-      isTemporaryUtil: true,
-      hasConfig: true,
-      configs: Array.isArray(util.configs)
-        ? util.configs.concat(preConfig)
-        : [preConfig]
-    }
-  )
+  Object.assign((tar, config = {}) => util(tar, { ...config, ...preConfig }), util, {
+    isTemporaryUtil: true,
+    hasConfig: true,
+    configs: Array.isArray(util.configs) ? util.configs.concat(preConfig) : [preConfig]
+  })
 
 const addTarget = (util, ...preTargets) => {
   if (util.targetNumber === 0) return util
@@ -94,16 +88,18 @@ export const utilCreator = config => {
     {
       // 直接由设定得到
       utilName: config.utilName || 'unknown',
+      utilDepth: config.utilDepth || 1,
+      isJudger: config.isJudger || false,
       plugin,
       isHighOrderFunction: config.isHighOrderFunction || false, //特殊标记
 
       // 由计算得到
       targetNumber: targetNumber, //targetNumber值会变，生产环境下会使用
       utilLevel: targetNumber, //utilLevel值不变，生产环境下用不着
-      isUnary: targetNumber === 1,
-      isBinary: targetNumber === 2,
-      isTrinary: targetNumber === 3,
-      isInfinary: targetNumber === Infinity,
+      isUnary: config.utilDepth === 1,
+      isBinary: config.utilDepth === 2,
+      isTrinary: config.utilDepth === 3,
+      isInfinary: config.utilDepth === Infinity,
       targetInputType: Object.keys(utilCode),
       creator: utilCreator,
       addTarget(...targets) {

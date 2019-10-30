@@ -10,11 +10,13 @@ interface Util {
   (...params: any[]): UtilOutputType
   targetNumber: number //targetNumber值会变，生产环境下会使用
   readonly utilName: string
+  readonly utilDapth: number //替代utilLevel
   readonly utilLevel: number //utilLevel值不变，生产环境下用不着
-  readonly isUnary: Boolean
-  readonly isBinary: Boolean
-  readonly isTrinary: Boolean
-  readonly isInfinary: Boolean
+  readonly isJudger: boolean
+  readonly isUnary: boolean
+  readonly isBinary: boolean
+  readonly isTrinary: boolean
+  readonly isInfinary: boolean
   readonly targetInputType: string[]
 
   creator: UtilCreator
@@ -35,9 +37,12 @@ interface TargetedUtil extends Util {
   target: Target[]
 }
 type UtilFunction = (...any: any[]) => any
-interface UtilCreator { //要能智能推断是unary还是binary还是什么
+interface UtilCreator {
+  //要能智能推断是unary还是binary还是什么
   (config: {
     utilName: string
+    utilDepth?: number
+    isJudger?: boolean
     plugin?: ('memorize' | 'once')[]
     utilCode: {
       'boolean'?: UtilFunction
@@ -45,31 +50,31 @@ interface UtilCreator { //要能智能推断是unary还是binary还是什么
       'string'?: UtilFunction
       'Array'?: UtilFunction
       'Object'?: UtilFunction
-      'boolean.boolean'?: UtilFunction
-      'boolean.number'?: UtilFunction
-      'boolean.string'?: UtilFunction
-      'boolean.Array'?: UtilFunction
-      'boolean.Object'?: UtilFunction
-      'number.boolean'?: UtilFunction
-      'number.number'?: UtilFunction
-      'number.string'?: UtilFunction
-      'number.Array'?: UtilFunction
-      'number.Object'?: UtilFunction
-      'string.boolean'?: UtilFunction
-      'string.number'?: UtilFunction
-      'string.string'?: UtilFunction
-      'string.Array'?: UtilFunction
-      'string.Object'?: UtilFunction
-      'Array.boolean'?: UtilFunction
-      'Array.number'?: UtilFunction
-      'Array.string'?: UtilFunction
-      'Array.Array'?: UtilFunction
-      'Array.Object'?: UtilFunction
-      'Object.boolean'?: UtilFunction
-      'Object.number'?: UtilFunction
-      'Object.string'?: UtilFunction
-      'Object.Array'?: UtilFunction
-      'Object.Object'?: UtilFunction
+      'boolean,boolean'?: UtilFunction
+      'boolean,number'?: UtilFunction
+      'boolean,string'?: UtilFunction
+      'boolean,Array'?: UtilFunction
+      'boolean,Object'?: UtilFunction
+      'number,boolean'?: UtilFunction
+      'number,number'?: UtilFunction
+      'number,string'?: UtilFunction
+      'number,Array'?: UtilFunction
+      'number,Object'?: UtilFunction
+      'string,boolean'?: UtilFunction
+      'string,number'?: UtilFunction
+      'string,string'?: UtilFunction
+      'string,Array'?: UtilFunction
+      'string,Object'?: UtilFunction
+      'Array,boolean'?: UtilFunction
+      'Array,number'?: UtilFunction
+      'Array,string'?: UtilFunction
+      'Array,Array'?: UtilFunction
+      'Array,Object'?: UtilFunction
+      'Object,boolean'?: UtilFunction
+      'Object,number'?: UtilFunction
+      'Object,string'?: UtilFunction
+      'Object,Array'?: UtilFunction
+      'Object,Object'?: UtilFunction
       'boolean[]'?: UtilFunction
       'number[]'?: UtilFunction
       'string[]'?: UtilFunction
