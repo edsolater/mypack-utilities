@@ -81,10 +81,10 @@ export const utilCreator = config => {
       const trueTargets = params.slice(0, targetNumber)
       const codeKey =
         targetNumber === Infinity
-          ? type(trueTargets[0] /* 随便选一个 */)
+          ? type(trueTargets[0] /* 使用第一个变量的类型 */) + '[]'
           : trueTargets.map(type).join(',')
       try {
-        return utilCode[codeKey](
+        return (utilCode[codeKey] || utilCode['any'] || utilCode['any[]'])(
           ...(configObject ? trueTargets.concat(configObject) : trueTargets)
         )
       } catch {
@@ -92,7 +92,7 @@ export const utilCreator = config => {
       }
     },
     {
-      // 直接设定得到
+      // 直接由设定得到
       utilName: config.utilName || 'unknown',
       plugin,
       isHighOrderFunction: config.isHighOrderFunction || false, //特殊标记
@@ -166,7 +166,7 @@ const infinaryExample = utilCreator({
   utilName: 'sum',
   plugin: ['memorize'],
   utilCode: {
-    'number': (...nums) => nums.reduce((acc, x) => acc + x, 0)
+    'number[]': (...nums) => nums.reduce((acc, x) => acc + x, 0)
   }
 })
 
