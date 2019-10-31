@@ -8,9 +8,8 @@ type ConfigObj = { [setting: string]: any }
 interface UtilJudger extends Util {
   (...any: any[]): boolean
 }
-type PureJudger = (...any: any[])=>boolean
+type PureJudger = (...any: any[]) => boolean
 type Judger = UtilJudger | PureJudger
-
 
 interface Util {
   /**

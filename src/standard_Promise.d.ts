@@ -1,4 +1,4 @@
-import { LastType } from './_type_utils'
+import { LastType } from './_type_toolkits'
 
 /**
  * 按顺序运行多个Promise
