@@ -19,31 +19,29 @@ export const isEven = val => isInt(val) && isInt(val % 2 === 0)
  */
 // export const is = shouldValue => val => val === shouldValue // TOFIX: 如此写不够灵活
 export const is = (...args) => {
-    const callbacks = args.map(val => {
-        if (typeof val === 'string') {
-            switch (val.toLowerCase()) {
-                case 'true': {
-                    return isTrue
-                }
-                case 'trusy': {
-                    return isTrusy
-                }
-                case 'false': {
-                    return isFalse
-                }
-                default: {
-                    throw Error(`haven't define a judger role for this value: ${val}`)
-                }
-            }
-        } else if (typeof val === 'function') {
-            return val
-        } else {
-            throw Error(
-                `can't recognize value type other than string or function, value is: ${val}`
-            )
+  const callbacks = args.map(val => {
+    if (typeof val === 'string') {
+      switch (val.toLowerCase()) {
+        case 'true': {
+          return isTrue
         }
-    })
-    return pipe(callbacks)
+        case 'trusy': {
+          return isTrusy
+        }
+        case 'false': {
+          return isFalse
+        }
+        default: {
+          throw Error(`haven't define a judger role for this value: ${val}`)
+        }
+      }
+    } else if (typeof val === 'function') {
+      return val
+    } else {
+      throw Error(`can't recognize value type other than string or function, value is: ${val}`)
+    }
+  })
+  return pipe(callbacks)
 }
 /**
  * TODO 我觉得可以再灵活点，overload它
@@ -71,13 +69,13 @@ const typeIs = (type, val) => ![, null].includes(val) && val.constructor === typ
  *
  */
 const areEqualRecursively = (x, y) => {
-    if (Object.is(x, y)) return true
-    if (x instanceof Date && y instanceof Date) return x.getTime() === y.getTime()
-    if (!x || !y || (typeof x !== 'object' && typeof y !== 'object')) return x === y
-    if (x.prototype !== y.prototype) return false
-    let keys = Object.keys(x)
-    if (keys.length !== Object.keys(y).length) return false
-    return keys.every(k => equals(x[k], y[k]))
+  if (Object.is(x, y)) return true
+  if (x instanceof Date && y instanceof Date) return x.getTime() === y.getTime()
+  if (!x || !y || (typeof x !== 'object' && typeof y !== 'object')) return x === y
+  if (x.prototype !== y.prototype) return false
+  let keys = Object.keys(x)
+  if (keys.length !== Object.keys(y).length) return false
+  return keys.every(k => equals(x[k], y[k]))
 } // 没懂
 
 /** mapper
@@ -92,14 +90,14 @@ const areEqualRecursively = (x, y) => {
  *
  */
 export const pipe = (...fns) => {
-    fns = fns.flat()
-    if (fns.length === 0) {
-        return any => any //为空时默认返回的函数
-    } else if (fns.length === 1) {
-        return fns[0] // 只有唯一函数值时默认返回的函数
-    } else {
-        return fns.reduce((fn1, fn2) => (...args) => fn2(fn1(...args)))
-    }
+  fns = fns.flat()
+  if (fns.length === 0) {
+    return any => any //为空时默认返回的函数
+  } else if (fns.length === 1) {
+    return fns[0] // 只有唯一函数值时默认返回的函数
+  } else {
+    return fns.reduce((fn1, fn2) => (...args) => fn2(fn1(...args)))
+  }
 }
 /**
  * 反转 judger 的判断条件
@@ -112,11 +110,11 @@ const negate = fn => (...args) => !fn(...args)
  * 捕获运行函数的异常
  */
 const attempt = fn => {
-    try {
-        return fn()
-    } catch (e) {
-        return e instanceof Error ? e : new Error(e)
-    }
+  try {
+    return fn()
+  } catch (e) {
+    return e instanceof Error ? e : new Error(e)
+  }
 }
 
 /**
@@ -132,43 +130,43 @@ const defer = (fn, { delay = 0 } = {}) => setTimeout(fn, delay)
  * timeTaken(() => Math.pow(2, 10)); // 1024, (logged): timeTaken: 0.02099609375ms
  */
 const timeTaken = (fn, ...args) => {
-    console.time('timeTaken')
-    const r = fn(...args)
-    console.timeEnd('timeTaken')
-    return r
+  console.time('timeTaken')
+  const r = fn(...args)
+  console.timeEnd('timeTaken')
+  return r
 }
 
 /**
  * 缓存函数
  */
 const memorize = fn => {
-    if (fn.cache) return fn // 已经是缓存函数了，就直接返回
-    function cachedFn(...args) {
-        const cacheKey = JSON.stringify(args)
-        const cache = cachedFn.cache
-        if (cache.has(cacheKey)) {
-            return cache.get(cacheKey)
-        } else {
-            cache.set(cacheKey, fn(...args))
-            return cache.get(cacheKey)
-        }
+  if (fn.cache) return fn // 已经是缓存函数了，就直接返回
+  function cachedFn(...args) {
+    const cacheKey = JSON.stringify(args)
+    const cache = cachedFn.cache
+    if (cache.has(cacheKey)) {
+      return cache.get(cacheKey)
+    } else {
+      cache.set(cacheKey, fn(...args))
+      return cache.get(cacheKey)
     }
-    cachedFn.cache = new Map()
-    return cachedFn
+  }
+  cachedFn.cache = new Map()
+  return cachedFn
 }
 
 /**
  * 只 调用一次的函数
  */
 const once = fn =>
-    function once(...args) {
-        if (once.called) {
-            return
-        } else {
-            once.called = true
-            return fn(...args)
-        }
+  function once(...args) {
+    if (once.called) {
+      return
+    } else {
+      once.called = true
+      return fn(...args)
     }
+  }
 
 /**
  * 固定函数的部分参数
@@ -177,16 +175,16 @@ const once = fn =>
  * fixParam(add, [3, 1], [4, 2]) = num => add(num, 3, 4)
  */
 const fixParam = (fn, ...valueIdx) => {
-    return (...args) => {
-        valueIdx.sort((x, y) => (x[1] || 1) - y[1])
-        valueIdx.forEach(([param, idx]) => {
-            args.splice()
-        })
-    }
+  return (...args) => {
+    valueIdx.sort((x, y) => (x[1] || 1) - y[1])
+    valueIdx.forEach(([param, idx]) => {
+      args.splice()
+    })
+  }
 } //这个逻辑没写完
 
 const formatParam = (...args) => {
-    args = args.flat()
+  args = args.flat()
 }
 
 /**
