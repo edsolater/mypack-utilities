@@ -156,3 +156,4 @@ type UtilCreator =
 export declare const utilCreator: UtilCreator
 
 type UnaryUtil<T = (...any: any[]) => any> = Util & T
+type BinnaryUtil<T = (...any: any[]) => any> = Util & T

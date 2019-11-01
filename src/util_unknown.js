@@ -51,8 +51,8 @@ const castArray = utilCreator({
  * type('hello') // "string"
  * type(1) // "number"
  */
-export const type = utilCreator({
-  utilName: 'type',
+export const getType = utilCreator({
+  utilName: 'getType',
   utilCode: {
     'any': val => {
       if (typeof val === 'object') {
@@ -63,6 +63,16 @@ export const type = utilCreator({
     }
   }
 })
+
+/**
+ * getType 的补充版
+ */
+export const assertType = utilCreator({
+  utilName: 'assertType',
+  utilCode: {
+    'any.string': (val, typeString) => type(val) === typeString
+  }
+}) //TODO: 这个propName坑定会出错的
 
 const isObject = utilCreator({
   utilName: 'isObject',

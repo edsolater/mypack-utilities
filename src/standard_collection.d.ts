@@ -93,9 +93,9 @@ export declare const flatten: UnaryUtil<
        */
       judger?: Judger
       /**
-       * 运算会不会改变原数组
+       * 运算会改变原数组，默认的方法是 immutable 的
        */
-      mode?: 'mutable' | 'immutable'
+      mutable?: boolean
     }
   ) => Val[]
 >
@@ -136,8 +136,17 @@ export declare const find: UnaryUtil<
  * @example
  * shuffle([2,3,4,5,6]) // [3,5,2,6,4]
  */
-export declare const shuffle: UnaryUtil<(arr: Val[]) => Val[]>
-
+export declare const shuffle: UnaryUtil<
+  (
+    arr: Val[],
+    config: {
+      /**
+       * 运算会改变原数组，默认的方法是 immutable 的
+       */
+      mutable: boolean
+    }
+  ) => Val[]
+>
 
 /**
  * 随机地获取一个值
@@ -159,4 +168,40 @@ export declare const pickRandomly: UnaryUtil<{
  */
 export declare const pluck: UnaryUtil<
   <O, K extends keyof O>(obj: O, config: { propNames: K[]; [configName: string]: any }) => O[K][] // 这样作为工具函数才是有灵魂的
+>
+
+/**
+ * **迟早要作为一个 overload 并入 flatten 方法的实现中。并将flattenObject作为一个函数的预定义形式**
+ * 以键的路径扁平化对象
+ * @example
+ * flattenObject({ a: { b: { c: 1 } }, d: 1 }); // { 'a.b.c': 1, d: 1 }
+ */
+export declare const flattenObject: UnaryUtil<
+  (
+    obj: Object,
+    config?: {
+      /**
+       * 用作路径分割符号的字符，默认为： "."
+       */
+      pathSlicer?: string
+    }
+  ) => Object
+>
+
+/**
+ * TODO: 暂时没看懂
+ * 以键的路径展开对象
+ * @example
+ * unflattenObject({ 'a.b.c': 1, d: 1 }); // { a: { b: { c: 1 } }, d: 1 }
+ */
+export declare const unflattenObject: UnaryUtil<
+  (
+    obj: Object,
+    config?: {
+      /**
+       * 用作路径分割符号的字符，默认采用： "."
+       */
+      pathSlicer?: string
+    }
+  ) => Object
 >

@@ -1,5 +1,5 @@
 import { utilCreator } from './_utilCreator.js'
-import { type, isDefined } from './util_unknown'
+import { getType, isDefined, assertType } from './util_unknown.js'
 
 // 这两个方法都不是谓语动词，是不是会增加心智负担，用作util不合适？
 export const all = utilCreator({
@@ -59,22 +59,21 @@ export const flatten = utilCreator({
   utilName: 'flatten',
   utilCode: {
     'Array': function flatten_core(arr, config = {}) {
-      const { depth, judger, mode = 'mutable' } = config
+      const { depth, judger, mutable } = config
       if (depth) return targetArray.flat(depth)
       const newArr = judger ? arr.filter(judger) : arr
-      if (mode == 'immutable') {
-        return [].concat(...newArr.map(v => (type(v) === 'Array' ? flatten_core(v, config) : v)))
-      }
-      if (mode == 'mutable') {
+      if (mutable) {
         let i = 0
         while (newArr[i] !== undefined) {
-          if (type(newArr[i]) === 'Array') {
+          if (getType(newArr[i]) === 'Array') {
             newArr.splice(i, 1, ...flatten_core(newArr[i], config))
           } else {
             i += 1
           }
         }
         return newArr
+      } else {
+        return [].concat(...newArr.map(v => (getType(v) === 'Array' ? flatten_core(v, config) : v)))
       }
     }
   }
@@ -110,7 +109,8 @@ export const find = utilCreator({
 export const shuffle = utilCreator({
   utilName: 'shuffle',
   utilCode: {
-    'Array': arr => {
+    'Array': (arr, { mutable }) => {
+      if (mutable) arr = [...arr]
       let cur = arr.length - 1
       while (cur) {
         const i = Math.floor(Math.random() * cur)
@@ -121,8 +121,6 @@ export const shuffle = utilCreator({
     }
   }
 })
-
-
 
 const core_pickRandomly_pickOne = arr => arr[Math.floor(Math.random() * arr.length)]
 const core_pickRandomly_pickMulti = (arr, pickNumber) => shuffle([...arr]).slice(0, pickNumber)
@@ -148,41 +146,77 @@ export const pickRandomly = utilCreator({
 
 /************对象************ */
 
-/**
- * TODO: 暂时没看懂
- * 以键的路径扁平化对象
- * @example
- * flattenObject({ a: { b: { c: 1 } }, d: 1 }); // { 'a.b.c': 1, d: 1 }
- */
-const flattenObject = (obj, prefix = '') =>
-  Object.keys(obj).reduce((acc, key) => {
-    const pre = prefix.length ? prefix + '.' : ''
-    if (typeof obj[key] === 'object') Object.assign(acc, flattenObject(obj[key], pre + key))
-    else acc[pre + key] = obj[key]
-    return acc
+export const flattenObject = utilCreator({
+  utilName: 'flattenObject',
+  utilCode: {
+    'Object': function _flattenObject(obj, config = {}) {
+      return Object.entries(obj).reduce((acc, [key, value]) => {
+        const { prefix, pathSlicer = '.' } = config
+        const prefixedKey = prefix ? prefix + pathSlicer + key : key
+        return Object.assign(
+          acc,
+          assertType(value, 'Object')
+            ? _flattenObject(value, { ...config, prefix: prefixedKey })
+            : { [prefixedKey]: value }
+        )
+      }, {})
+    }
+  }
+})
+const flattenObject = function _flattenObject(obj, config = {}) {
+  return Object.entries(obj).reduce((acc, [key, value]) => {
+    const { prefix, pathSlicer = '.' } = config
+    const prefixedKey = prefix ? prefix + pathSlicer + key : key
+    return Object.assign(
+      acc,
+      typeof value === 'object'
+        ? // assertType(value, 'Object')
+          _flattenObject(value, { ...config, prefix: prefixedKey })
+        : { [prefixedKey]: value }
+    )
   }, {})
-/**
- * TODO: 暂时没看懂
- * 以键的路径展开对象
- * @example
- * unflattenObject({ 'a.b.c': 1, d: 1 }); // { a: { b: { c: 1 } }, d: 1 }
- */
-const unflattenObject = obj =>
-  Object.keys(obj).reduce((acc, k) => {
-    if (k.indexOf('.') !== -1) {
-      const keys = k.split('.')
+}
+console.log(3)
+console.log(flattenObject({ a: { b: { c: 1 } }, d: 1 }))
+
+//有缺陷，只能转义JSON识别的字符串。这减少了通用性
+const unflattenObject = (obj, { pathSlicer = '.' } = {}) =>
+  Object.keys(obj).reduce((acc, currentKey) => {
+    if (currentKey.includes(pathSlicer)) {
+      const keys = currentKey.split(pathSlicer)
       Object.assign(
         acc,
         JSON.parse(
           '{' +
-            keys.map((v, i) => (i !== keys.length - 1 ? `"${v}":{` : `"${v}":`)).join('') +
-            obj[k] +
+            keys
+              .map((key, idx) => (idx !== keys.length - 1 ? `"${key}":{` : `"${key}":`))
+              .join('') +
+            obj[currentKey] +
             '}'.repeat(keys.length)
         )
       )
-    } else acc[k] = obj[k]
+    } else acc[currentKey] = obj[currentKey]
     return acc
   }, {})
+const _unflatteObject = function _unflattenObject(obj, config = {}) {
+  return Object.entries(obj).reduce((acc, [key, value]) => {
+    const { pathSlicer = '.', restKey: oldRestKeys } = config
+    const [firstKey, ...restKey] = oldRestKeys || key.split(pathSlicer)
+    return Object.assign(
+      acc,
+      key.includes(pathSlicer)
+        ? {
+            [firstKey]: _unflattenObject(
+              { [restKey.join(pathSlicer)]: value },
+              { ...config, restKey }
+            )
+          }
+        : { [key]: value }
+    )
+  }, {})
+}
+console.log(unflattenObject({ 'a.b.c': 1, d: 1 }))
+console.log(_unflatteObject({ 'a.b.aa': 1, d: 1 }))
 
 export const pluck = utilCreator({
   utilName: 'pluck',
