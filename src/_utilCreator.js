@@ -32,6 +32,7 @@ const pluginList = {
 }
 //#endregion
 const setConfig = (util, preConfig = {}) =>
+// 这个写法只适用于UnaryUtil，极其不灵活，需要仿照addTarget大改
   Object.assign((tar, config = {}) => util(tar, { ...config, ...preConfig }), util, {
     isTemporaryUtil: true,
     hasConfig: true,
@@ -40,16 +41,16 @@ const setConfig = (util, preConfig = {}) =>
 
 const addTarget = (util, ...preTargets) => {
   if (util.targetNumber === 0) return util
-  const effectiveTargets = preTargets.slice(0, util.targetNumber)
-  const restTargetNumber = util.targetNumber - effectiveTargets.length
+  const willUsedTargets = preTargets.slice(0, util.targetNumber)
+  const restTargetNumber = util.targetNumber - willUsedTargets.length
   return Object.assign(
     (...params) => {
       const configObj = params[restTargetNumber]
       const restTargets = params.slice(0, restTargetNumber)
       return util(
         ...(configObj
-          ? effectiveTargets.concat(restTargets, configObj)
-          : effectiveTargets.concat(restTargets))
+          ? willUsedTargets.concat(restTargets, configObj)
+          : willUsedTargets.concat(restTargets))
       )
     },
     util,
@@ -58,8 +59,8 @@ const addTarget = (util, ...preTargets) => {
       hasTarget: true,
       targetNumber: restTargetNumber,
       targets: Array.isArray(util.targets)
-        ? util.targets.concat(effectiveTargets)
-        : effectiveTargets
+        ? util.targets.concat(willUsedTargets)
+        : willUsedTargets
     }
   )
 }
@@ -78,50 +79,56 @@ export const utilCreator = utilSetting => {
     const utilFunction = utilCode[targets.map(type).join(',')] || utilCode['any']
     return utilFunction(...[targets, configObj].filter(Boolean))
   }
-  const util = Object.assign((utilSetting.utilType || 'unknown').includes('infinaryUtil') ? infinaryUtil : normalUtil, {
-    // 直接由设定得到
-    utilName: utilSetting.utilName || 'unknown',
-    utilType: utilSetting.utilType || 'unknown',
-    canMutate: utilSetting.canMutate || false,
-    plugin,
-    plugins,
-    isHighOrderFunction: utilSetting.isHighOrderFunction || false, //特殊标记
+  const util = Object.assign(
+    (utilSetting.utilType || 'unknown').includes('infinaryUtil') ? infinaryUtil : normalUtil,
+    {
+      // 直接由设定得到
+      utilName: utilSetting.utilName || 'unknown',
+      utilType: utilSetting.utilType || 'unknown',
+      canMutate: utilSetting.canMutate || false,
+      plugin,
+      plugins,
+      isHighOrderFunction: utilSetting.isHighOrderFunction || false, //特殊标记
 
-    // 由计算得到
-    targetNumber: utilTargetNumber, //targetNumber值会变，它的值在生产环境下也会使用
-    creator: utilCreator,
+      // 由计算得到
+      targetNumber: utilTargetNumber, //targetNumber值会变，它的值在生产环境下也会使用
+      creator: utilCreator,
 
-    //计算属性 Todo
-    get isInfinaryUtil() {
-      return this.utilType.includes('infinaryUtil')
-    },
-    get isBinaryUtil() {
-      return this.utilType.includes('binaryUtil')
-    },
-    get isUnaryUtil() {
-      return this.utilType.includes('unaryUtil')
-    },
-    get isTrinaryUtil() {
-      return this.utilType.includes('trinaryUtil')
-    },
-    get isJudger(){
-      return this.utilType.includes('judger')
-    },
+      //计算属性 Todo
+      get isZeroUtil() {
+        return this.utilType.includes('zeroUtil') 
+      },
+      get isUnaryUtil() {
+        return this.utilType.includes('unaryUtil')
+      },
+      get isBinaryUtil() {
+        return this.utilType.includes('binaryUtil')
+      },
+      get isTrinaryUtil() {
+        return this.utilType.includes('trinaryUtil')
+      },
+      get isInfinaryUtil() {
+        return this.utilType.includes('infinaryUtil')
+      },
+      get isJudger() {
+        return this.utilType.includes('judger')
+      },
 
-    //方法
-    addTarget(...targets) {
-      return addTarget(this, ...targets)
-    },
-    setConfig(configObj) {
-      return setConfig(this, configObj)
-    },
-    exec() {
-      return this()
-    },
-    async execAsync() {
-      return await this()
-    } //可能并不需要async模块
-  })
+      //方法
+      addTarget(...targets) {
+        return addTarget(this, ...targets)
+      },
+      setConfig(configObj) {
+        return setConfig(this, configObj)
+      },
+      exec() {
+        return this()
+      },
+      async execAsync() {
+        return await this()
+      } //可能并不需要async模块
+    }
+  )
   return plugins
     .filter(Boolean)
     .reduce((acc, pluginName) => (pluginList[pluginName] ? pluginList[pluginName](acc) : acc), util)
