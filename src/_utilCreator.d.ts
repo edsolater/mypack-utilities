@@ -41,6 +41,10 @@ interface Util {
    */
   readonly isJudger: boolean
   /**
+   * 标记工具函数是否是有特殊行为的InfinaryUtil
+   */
+  readonly isInfinaryUtil?: boolean
+  /**
    * 记录“元”的类型
    */
   readonly targetInputType: string[]
@@ -97,6 +101,11 @@ type UtilCreator =
      * 标记工具函数是否是个judger
      */
     isJudger?: boolean
+    /**
+     * 标记工具函数是否是有特殊行为的InfinaryUtil
+     * 对于InfinaryUtil，此项必须显示地指定
+     */
+    isInfinaryUtil?: boolean
     /**
      * 核心代码
      */
@@ -155,5 +164,23 @@ type UtilCreator =
  */
 export declare const utilCreator: UtilCreator
 
-type UnaryUtil<T = (...any: any[]) => any> = Util & T
-type BinnaryUtil<T = (...any: any[]) => any> = Util & T
+type UnaryUtil<T extends (...any: any) => any> = Util & T
+type BinaryUtil<T extends (...any: any) => any> = Util & T
+/**
+ * 比较特殊，
+ * 可以是一元函数，第一参数必须有[]包裹，可以接受配置对象
+ * 可以是无限参数，无需使用[]包裹，但不能接受配置对象
+ */
+type MapInfinaryUtil<T> = T extends ((
+  tars: Array<infer Tar>,
+  config?: infer Config
+) => infer Output)
+  ? (...tars: Tar[]) => Output
+  : never
+
+type InfinaryUtil<T> = Util & T & MapInfinaryUtil<T>
+
+// type InfinaryUtil<T> = T extends ((tars: infer Tars, config?: infer Config) => infer Output)
+//   ? Tars extends Array<infer Tar> ? (tars: Tar[], config?: Config) => Output
+//   : (...tars: )
+//   : 3

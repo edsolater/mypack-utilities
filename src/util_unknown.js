@@ -81,3 +81,5 @@ const isObject = utilCreator({
     'any': val => typeof val === 'object'
   }
 })
+
+export const emptyMapper = val => val

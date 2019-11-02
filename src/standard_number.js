@@ -1,28 +1,22 @@
 import { utilCreator } from './_utilCreator.js'
-/**
- * 取平均值
- * @param {number[]} nums
- * @example
- * average(...[1, 2, 3]); // 2
- * average(1, 2, 3); // 2
- * average([1, 2, 3]); // 2
- */
-const average = utilCreator({
+import { emptyMapper } from './util_unknown.js'
+console.log(4)
+
+export const average = utilCreator({
   utilName: 'average',
+  isInfinaryUtil: true,
   utilCode: {
-    'number[]': (...nums) => nums.filter(Boolean).reduce((acc, val) => acc + val, 0) / nums.length
+    'number[]': (nums, { by, mapper = by } = {}) => {
+      return (
+        nums
+          .filter(Boolean)
+          .map(mapper || emptyMapper)
+          .reduce((acc, val) => acc + val, 0) / nums.length
+      )
+    }
   }
 })
 
-/**
- * 取平均值（带操作，单只能以数组形式传递）
- * @param {any[]} targetArray
- * @param {Function} mapper
- * @example
- * averageBy([{ n: 4 }, { n: 2 }, { n: 8 }, { n: 6 }], o => o.n); // 5
- * averageBy([{ n: 4 }, { n: 2 }, { n: 8 }, { n: 6 }], 'n'); // 5
- */
-const averageBy = (targetArray, mapper) => targetArray.map(mapper)
 
 /**
  * 在指定范围之间生成随机数
@@ -35,7 +29,8 @@ const random = (length = 10, range = [1, 10]) =>
 const sumTwo = (x, y) => Number(x) + Number(y)
 const sum = (...nums) => nums.reduce(sumTwo)
 console.log(3)
-console.log(average(3, 4, 5, 2, 4))
+console.log(average(3))
+console.log(average([3, 4, 5, 2, 4]))
 
 /**
  * 约等于

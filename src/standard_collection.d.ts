@@ -119,11 +119,11 @@ export declare const find: UnaryUtil<
        */
       findOne?: boolean
       /**
-       * 寻找的目标（其实是targetValues的一个快捷方式）
+       * 查找的目标（其实是targetValues的一个快捷方式）
        */
       targetValue?: Val
       /**
-       * 寻找的目标们
+       * 查找的目标们
        */
       targetValues?: Val[]
     }
@@ -161,16 +161,6 @@ export declare const pickRandomly: UnaryUtil<{
 }>
 
 /**
- * 取出propValues
- * （待实现）与remove方法的目的相反
- * @example
- * pluck({ foo: 'hello', a: '1', b: '2' }, { propNames: ['a', 'b'] })//['1', '2']
- */
-export declare const pluck: UnaryUtil<
-  <O, K extends keyof O>(obj: O, config: { propNames: K[]; [configName: string]: any }) => O[K][] // 这样作为工具函数才是有灵魂的
->
-
-/**
  * **迟早要作为一个 overload 并入 flatten 方法的实现中。并将flattenObject作为一个函数的预定义形式**
  * 以键的路径扁平化对象
  * @example
@@ -204,4 +194,14 @@ export declare const unflattenObject: UnaryUtil<
       pathSlicer?: string
     }
   ) => Object
+>
+
+/**
+ * 取出propValues
+ * （待实现）与remove方法的目的相反
+ * @example
+ * pluck({ foo: 'hello', a: '1', b: '2' }, { propNames: ['a', 'b'] })//['1', '2']
+ */
+export declare const pluck: UnaryUtil<
+  <O, K extends keyof O>(obj: O, config: { propNames: K[]; [configName: string]: any }) => O[K][] // 这样作为工具函数才是有灵魂的
 >

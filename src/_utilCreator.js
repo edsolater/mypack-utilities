@@ -6,10 +6,8 @@ const type = val => {
     return typeof val
   }
 }
-/*region 额外的功能模块
-还没想好怎么加
-可有memorize功能模块、async功能模块（最终运算时是异步的）
-endregion */
+const assertType = (val, typeString) => type(val) === typeString
+
 //#region 额外的功能模块
 /**
  * 缓存功能
@@ -66,64 +64,54 @@ const addTarget = (util, ...preTargets) => {
   )
 }
 export const utilCreator = config => {
-  const { utilCode, plugin /* 就是个快捷方式 */, plugins = [plugin] } = config
-  const anUtil = Object.values(utilCode)[0] // 随便找一个Util函数的某个类型的定义，反正传参数量都应该是一样的。
-  const targetNumber = anUtil.length || Infinity
-  const outputUtil = Object.assign(
-    (...params) => {
-      const configObject = params[targetNumber]
-      const trueTargets = params.slice(0, targetNumber)
-      const codeKey =
-        targetNumber === Infinity
-          ? type(trueTargets[0] /* 使用第一个变量的类型 */) + '[]'
-          : trueTargets.map(type).join(',')
-      try {
-        return (utilCode[codeKey] || utilCode['any'] || utilCode['any[]'])(
-          ...(configObject ? trueTargets.concat(configObject) : trueTargets)
-        )
-      } catch {
-        throw Error(`utilCode hasn't inputType(${codeKey})`)
-      }
-    },
-    {
-      // 直接由设定得到
-      utilName: config.utilName || 'unknown',
-      utilDepth: config.utilDepth || 1,
-      isJudger: config.isJudger || false,
-      canMutate: config.canMutate || false,
-      plugin,
-      plugins,
-      isHighOrderFunction: config.isHighOrderFunction || false, //特殊标记
+  const { utilCode, plugin /* 这其实是个快捷方式 */, plugins = [plugin], isInfinaryUtil } = config
+  const anUtil = Object.values(utilCode)[0] // 随便找一个Util函数的某个类型的定义，反正传参数量都应该是一致的。
+  const shouldTargetNumber = anUtil.length //定义 Util 时不存在(...tars)=> 这种自由度过大的写法，但infinaryUtil在使用时可传任意数量的参数
+  const infinaryUtil = (...params) => {
+    const configObj = params.length === 2 && assertType(params[1], 'Object') && params.pop()
+    const targets = params.length === 1 && Array.isArray(params[0]) ? params[0] : params
+    const utilFunction = utilCode[type(targets[0]) + '[]'] || utilCode['any[]']
+    return utilFunction(targets, configObj || undefined)
+  }
+  const normalUtil = (...params) => {
+    const configObj = params[shouldTargetNumber]
+    const targets = params.slice(0, shouldTargetNumber)
+    const utilFunction = utilCode[targets.map(type).join(',')] || utilCode['any']
+    return utilFunction(targets, configObj || undefined)
+  }
+  const util = Object.assign(isInfinaryUtil ? infinaryUtil : normalUtil, {
+    // 直接由设定得到
+    utilName: config.utilName || 'unknown',
+    utilDepth: config.utilDepth || 1,
+    isJudger: config.isJudger || false,
+    isInfinaryUtil: config.isInfinaryUtil || false,
+    canMutate: config.canMutate || false,
+    plugin,
+    plugins,
+    isHighOrderFunction: config.isHighOrderFunction || false, //特殊标记
 
-      // 由计算得到
-      targetNumber: targetNumber, //targetNumber值会变，生产环境下会使用
-      targetInputType: Object.keys(utilCode),
-      creator: utilCreator,
-      addTarget(...targets) {
-        return addTarget(this, ...targets)
-      },
-      setConfig(configObj) {
-        return setConfig(this, configObj)
-      },
-      exec() {
-        return this()
-      },
-      async execAsync() {
-        return await this()
-      } //可能并不需要async模块
-    }
-  )
-  return Object.assign(
-    plugins.reduce((acc, pluginName) => pluginList[pluginName](acc), outputUtil),
-    outputUtil
-  )
+    // 由计算得到
+    targetNumber: shouldTargetNumber, //targetNumber值会变，生产环境下会使用
+    targetInputType: Object.keys(utilCode),
+    creator: utilCreator,
+    addTarget(...targets) {
+      return addTarget(this, ...targets)
+    },
+    setConfig(configObj) {
+      return setConfig(this, configObj)
+    },
+    exec() {
+      return this()
+    },
+    async execAsync() {
+      return await this()
+    } //可能并不需要async模块
+  })
+  return plugins
+    .filter(Boolean)
+    .reduce((acc, pluginName) => (pluginList[pluginName] ? pluginList[pluginName](acc) : acc), util)
 }
 
-export const isUnaryUtil = util => util.utilDepth == 1
-export const isBinaryUtil = util => util.utilDepth == 2
-export const isTrinaryUtil = util => util.utilDepth == 3
-export const isInfinaryUtil = util => util.utilDepth == Infinity
-export const isJudgerUtil = util => Boolean(util.isJudger)
 /******************* 以下为使用示例 *******************/
 const unaryExample = utilCreator({
   utilName: 'decompose',
@@ -159,14 +147,14 @@ const trinaryExample = utilCreator({
 //     .exec()
 // )
 // console.log(trinaryExample.utilDepth)
-const infinaryExample = utilCreator({
-  utilName: 'sum',
-  plugins: ['memorize'],
-  utilCode: {
-    'number[]': (...nums) => nums.reduce((acc, x) => acc + x, 0)
-  }
-})
+// const infinaryExample = utilCreator({
+//   utilName: 'sum',
+//   plugins: ['memorize'],
+//   utilCode: {
+//     'number[]': (...nums) => nums.reduce((acc, x) => acc + x, 0)
+//   }
+// })
 
-console.log(infinaryExample.addTarget(3).addTarget(3)(4, 5))
-console.log(infinaryExample.addTarget(3).addTarget(3)())
-console.log(infinaryExample.utilDepth)
+// console.log(infinaryExample.addTarget(3).addTarget(3)(4, 5))
+// console.log(infinaryExample.addTarget(3).addTarget(3)())
+// console.log(infinaryExample.utilDepth)

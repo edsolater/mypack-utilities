@@ -103,6 +103,7 @@ export const find = utilCreator({
 /**
  * “洗牌”数组
  * @mutate
+ * @alias
  * @example
  * shuffle([2,3,4,5,6]) // [3,5,2,6,4]
  */
@@ -163,60 +164,29 @@ export const flattenObject = utilCreator({
     }
   }
 })
-const flattenObject = function _flattenObject(obj, config = {}) {
-  return Object.entries(obj).reduce((acc, [key, value]) => {
-    const { prefix, pathSlicer = '.' } = config
-    const prefixedKey = prefix ? prefix + pathSlicer + key : key
-    return Object.assign(
-      acc,
-      typeof value === 'object'
-        ? // assertType(value, 'Object')
-          _flattenObject(value, { ...config, prefix: prefixedKey })
-        : { [prefixedKey]: value }
-    )
-  }, {})
-}
-console.log(3)
-console.log(flattenObject({ a: { b: { c: 1 } }, d: 1 }))
 
-//有缺陷，只能转义JSON识别的字符串。这减少了通用性
-const unflattenObject = (obj, { pathSlicer = '.' } = {}) =>
-  Object.keys(obj).reduce((acc, currentKey) => {
-    if (currentKey.includes(pathSlicer)) {
-      const keys = currentKey.split(pathSlicer)
-      Object.assign(
-        acc,
-        JSON.parse(
-          '{' +
-            keys
-              .map((key, idx) => (idx !== keys.length - 1 ? `"${key}":{` : `"${key}":`))
-              .join('') +
-            obj[currentKey] +
-            '}'.repeat(keys.length)
+export const unflattenObject = utilCreator({
+  utilName: 'unflattenObject',
+  utilCode: {
+    'Object': function _unflattenObject(obj, config = {}) {
+      return Object.entries(obj).reduce((acc, [key, value]) => {
+        const { pathSlicer = '.', restKey: oldRestKeys } = config
+        const [firstKey, ...restKey] = oldRestKeys || key.split(pathSlicer)
+        return Object.assign(
+          acc,
+          key.includes(pathSlicer)
+            ? {
+                [firstKey]: _unflattenObject(
+                  { [restKey.join(pathSlicer)]: value },
+                  { ...config, restKey }
+                )
+              }
+            : { [key]: value }
         )
-      )
-    } else acc[currentKey] = obj[currentKey]
-    return acc
-  }, {})
-const _unflatteObject = function _unflattenObject(obj, config = {}) {
-  return Object.entries(obj).reduce((acc, [key, value]) => {
-    const { pathSlicer = '.', restKey: oldRestKeys } = config
-    const [firstKey, ...restKey] = oldRestKeys || key.split(pathSlicer)
-    return Object.assign(
-      acc,
-      key.includes(pathSlicer)
-        ? {
-            [firstKey]: _unflattenObject(
-              { [restKey.join(pathSlicer)]: value },
-              { ...config, restKey }
-            )
-          }
-        : { [key]: value }
-    )
-  }, {})
-}
-console.log(unflattenObject({ 'a.b.c': 1, d: 1 }))
-console.log(_unflatteObject({ 'a.b.aa': 1, d: 1 }))
+      }, {})
+    }
+  }
+})
 
 export const pluck = utilCreator({
   utilName: 'pluck',
