@@ -71,13 +71,13 @@ export const utilCreator = utilSetting => {
     const configObj = params.length === 2 && assertType(params[1], 'Object') && params.pop()
     const targets = params.length === 1 && Array.isArray(params[0]) ? params[0] : params
     const utilFunction = utilCode[type(targets[0]) + '[]'] || utilCode['any[]']
-    return utilFunction(...[targets, configObj].filter(Boolean))
+    return utilFunction(...[...targets, configObj].filter(Boolean))
   }
   const normalUtil = (...params) => {
     const configObj = params[utilTargetNumber]
     const targets = params.slice(0, utilTargetNumber)
     const utilFunction = utilCode[targets.map(type).join(',')] || utilCode['any']
-    return utilFunction(...[targets, configObj].filter(Boolean))
+    return utilFunction(...[...targets, configObj].filter(Boolean))
   }
   const util = Object.assign(
     (utilSetting.utilType || 'unknown').includes('infinaryUtil') ? infinaryUtil : normalUtil,

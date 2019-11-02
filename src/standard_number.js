@@ -21,8 +21,8 @@ export const average = utilCreator({
  * @example
  * random() // [2,4,5,2,6,7,8,0,2,6]
  */
-const random = (length = 10, range = [1, 10]) =>
-  Array.from({ length }, () => Math.floor(Math.random() * (range[1] - range[0] + 1) + range[0]))
+// const random = (length = 10, range = [1, 10]) =>
+//   Array.from({ length }, () => Math.floor(Math.random() * (range[1] - range[0] + 1) + range[0]))
 
 const sumTwo = (x = 0, y = 0) => Number(x) + Number(y)
 const sum = (...nums) => nums.reduce(sumTwo)
@@ -36,7 +36,14 @@ export const range = utilCreator({
       Array.from({ length: (to && to - from) || length }, (_, idx) => idx + from)
   }
 })
-
+const random = utilCreator({
+  utilName: 'random',
+  utilType: 'zeroUtil',
+  utilCode: {
+    'any': ({ max } = {}) => Math.random() * max
+  }
+})
+console.log(random({max:20}))
 
 /**
  * 约等于

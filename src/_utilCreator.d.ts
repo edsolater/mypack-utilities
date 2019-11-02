@@ -107,7 +107,6 @@ type UtilCreator =
      */
     utilCode: {
       // 0元Util
-      ''?: UtilFunction
 
       // 1元Util
       'boolean'?: UtilFunction
