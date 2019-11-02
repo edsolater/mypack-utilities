@@ -1,10 +1,9 @@
 import { utilCreator } from './_utilCreator.js'
 import { emptyMapper } from './util_unknown.js'
-console.log(4)
 
 export const average = utilCreator({
   utilName: 'average',
-  isInfinaryUtil: true,
+  utilType: ['infinaryUtil', 'judger'],
   utilCode: {
     'number[]': (nums, { by, mapper = by } = {}) => {
       return (
@@ -17,7 +16,6 @@ export const average = utilCreator({
   }
 })
 
-
 /**
  * 在指定范围之间生成随机数
  * @example
@@ -26,11 +24,18 @@ export const average = utilCreator({
 const random = (length = 10, range = [1, 10]) =>
   Array.from({ length }, () => Math.floor(Math.random() * (range[1] - range[0] + 1) + range[0]))
 
-const sumTwo = (x, y) => Number(x) + Number(y)
+const sumTwo = (x = 0, y = 0) => Number(x) + Number(y)
 const sum = (...nums) => nums.reduce(sumTwo)
-console.log(3)
-console.log(average(3))
-console.log(average([3, 4, 5, 2, 4]))
+
+console.log('array: ', Array.from({ length: 10 - 2 + 1 }, (_, idx) => idx + 2))
+export const range = utilCreator({
+  utilName: 'range',
+  utilType: 'unaryUtil',
+  utilCode: {
+    'number': (length = 10, { from = 0, to = from + length } = {}) =>
+      Array.from({ length: (to && to - from) || length }, (_, idx) => idx + from)
+  }
+})
 
 /**
  * 约等于
@@ -39,8 +44,7 @@ console.log(average([3, 4, 5, 2, 4]))
  */
 const approximatelyEqual = utilCreator({
   utilName: 'approximatelyEqual',
-  utilDepth: 2,
-  isJudger: true,
+  utilType: ['binaryUtil', 'judger'],
   utilCode: {
     'number,number': (v1 = 1, v2 = 1, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon
   }

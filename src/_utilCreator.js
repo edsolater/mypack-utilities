@@ -63,37 +63,52 @@ const addTarget = (util, ...preTargets) => {
     }
   )
 }
-export const utilCreator = config => {
-  const { utilCode, plugin /* 这其实是个快捷方式 */, plugins = [plugin], isInfinaryUtil } = config
-  const anUtil = Object.values(utilCode)[0] // 随便找一个Util函数的某个类型的定义，反正传参数量都应该是一致的。
-  const shouldTargetNumber = anUtil.length //定义 Util 时不存在(...tars)=> 这种自由度过大的写法，但infinaryUtil在使用时可传任意数量的参数
+export const utilCreator = utilSetting => {
+  const { utilCode, plugin /* 这其实是个快捷方式 */, plugins = [plugin] } = utilSetting
+  const utilTargetNumber = Object.values(utilCode)[0].length //定义 Util 时不存在(...tars)=> 这种自由度过大的写法，但infinaryUtil在使用时可传任意数量的参数
   const infinaryUtil = (...params) => {
     const configObj = params.length === 2 && assertType(params[1], 'Object') && params.pop()
     const targets = params.length === 1 && Array.isArray(params[0]) ? params[0] : params
     const utilFunction = utilCode[type(targets[0]) + '[]'] || utilCode['any[]']
-    return utilFunction(targets, configObj || undefined)
+    return utilFunction(...[targets, configObj].filter(Boolean))
   }
   const normalUtil = (...params) => {
-    const configObj = params[shouldTargetNumber]
-    const targets = params.slice(0, shouldTargetNumber)
+    const configObj = params[utilTargetNumber]
+    const targets = params.slice(0, utilTargetNumber)
     const utilFunction = utilCode[targets.map(type).join(',')] || utilCode['any']
-    return utilFunction(targets, configObj || undefined)
+    return utilFunction(...[targets, configObj].filter(Boolean))
   }
-  const util = Object.assign(isInfinaryUtil ? infinaryUtil : normalUtil, {
+  const util = Object.assign((utilSetting.utilType || 'unknown').includes('infinaryUtil') ? infinaryUtil : normalUtil, {
     // 直接由设定得到
-    utilName: config.utilName || 'unknown',
-    utilDepth: config.utilDepth || 1,
-    isJudger: config.isJudger || false,
-    isInfinaryUtil: config.isInfinaryUtil || false,
-    canMutate: config.canMutate || false,
+    utilName: utilSetting.utilName || 'unknown',
+    utilType: utilSetting.utilType || 'unknown',
+    canMutate: utilSetting.canMutate || false,
     plugin,
     plugins,
-    isHighOrderFunction: config.isHighOrderFunction || false, //特殊标记
+    isHighOrderFunction: utilSetting.isHighOrderFunction || false, //特殊标记
 
     // 由计算得到
-    targetNumber: shouldTargetNumber, //targetNumber值会变，生产环境下会使用
-    targetInputType: Object.keys(utilCode),
+    targetNumber: utilTargetNumber, //targetNumber值会变，它的值在生产环境下也会使用
     creator: utilCreator,
+
+    //计算属性 Todo
+    get isInfinaryUtil() {
+      return this.utilType.includes('infinaryUtil')
+    },
+    get isBinaryUtil() {
+      return this.utilType.includes('binaryUtil')
+    },
+    get isUnaryUtil() {
+      return this.utilType.includes('unaryUtil')
+    },
+    get isTrinaryUtil() {
+      return this.utilType.includes('trinaryUtil')
+    },
+    get isJudger(){
+      return this.utilType.includes('judger')
+    },
+
+    //方法
     addTarget(...targets) {
       return addTarget(this, ...targets)
     },
@@ -115,6 +130,7 @@ export const utilCreator = config => {
 /******************* 以下为使用示例 *******************/
 const unaryExample = utilCreator({
   utilName: 'decompose',
+  utilType: 'unaryUtil',
   utilCode: {
     'string': (x, config = {}) => [...x],
     'Array': (x, config = {}) => [3]
@@ -125,6 +141,7 @@ const unaryExample = utilCreator({
 // console.log(unaryExample.addTarget('hello'))
 const binaryExample = utilCreator({
   utilName: 'addTwo',
+  utilType: 'binaryUtil',
   utilCode: {
     'number,number': (x, y, config = {}) => x + y
   }
@@ -134,6 +151,7 @@ const binaryExample = utilCreator({
 // console.log(binaryExample)
 const trinaryExample = utilCreator({
   utilName: 'addThree',
+  utilType: 'trinaryUtil',
   utilCode: {
     'number,number,number': (x, y, z, config = {}) => x + y + z
   }

@@ -10,7 +10,7 @@ interface UtilJudger extends Util {
 }
 type PureJudger = (...any: any[]) => boolean
 type Judger = UtilJudger | PureJudger
-
+type avaliableUtilType = 'unaryUtil' | 'binaryUtil' | 'trinaryUtil' | 'infinaryUtil' | 'judger'
 interface Util {
   /**
    * 还需传入的 “元” 的数量
@@ -21,13 +21,13 @@ interface Util {
    */
   readonly utilName: string
   /**
-   * 共需传入的 “元” 的数量
-   */
-  readonly utilDapth: number
-  /**
    * 是否会改变 “元” 自身内容（默认返回一个新值）
    */
   readonly canMutate: boolean
+  /**
+   * 此Util的种类（必须指定）
+   */
+  readonly utilType: string
   /**
    * Util所使用的plugin（是plugins的快捷方式的存在）
    */
@@ -43,11 +43,7 @@ interface Util {
   /**
    * 标记工具函数是否是有特殊行为的InfinaryUtil
    */
-  readonly isInfinaryUtil?: boolean
-  /**
-   * 记录“元”的类型
-   */
-  readonly targetInputType: string[]
+  readonly isInfinaryUtil: boolean
   /**
    * 添加 “元”，返回新临时Util
    */
@@ -82,11 +78,11 @@ type UtilCreator =
      */
     utilName: string
     /**
-     * 共需传入的 “元” 的数量
+     * 此Util的种类（必须指定）
      */
-    utilDapth?: number
+    utilType: avaliableUtilType | avaliableUtilType[]
     /**
-     * 是否会改变 “元” 自身内容（默认返回一个新值）
+     * 是否会改变 “元” 自身内容（默认返回一个新值，即immutable）
      */
     canMutate?: boolean
     /**
@@ -97,15 +93,6 @@ type UtilCreator =
      * Util所使用的plugins
      */
     plugins?: ('memorize' | 'once')[]
-    /**
-     * 标记工具函数是否是个judger
-     */
-    isJudger?: boolean
-    /**
-     * 标记工具函数是否是有特殊行为的InfinaryUtil
-     * 对于InfinaryUtil，此项必须显示地指定
-     */
-    isInfinaryUtil?: boolean
     /**
      * 核心代码
      */
@@ -140,12 +127,12 @@ type UtilCreator =
       'Object,string'?: UtilFunction
       'Object,Array'?: UtilFunction
       'Object,Object'?: UtilFunction
+      'any'?: UtilFunction
       'boolean[]'?: UtilFunction
       'number[]'?: UtilFunction
       'string[]'?: UtilFunction
       'Array[]'?: UtilFunction
       'Object[]'?: UtilFunction
-      'any'?: UtilFunction
       'any[]'?: UtilFunction
       [propName: string]: UtilFunction
     }
