@@ -6,6 +6,7 @@ export const average = utilCreator({
   utilType: ['infinaryUtil', 'judger'],
   utilCode: {
     'number[]': (nums, { by, mapper = by } = {}) => {
+      console.log('nums: ', nums)
       return (
         nums
           .filter(Boolean)
@@ -16,44 +17,32 @@ export const average = utilCreator({
   }
 })
 
-/**
- * 在指定范围之间生成随机数
- * @example
- * random() // [2,4,5,2,6,7,8,0,2,6]
- */
-// const random = (length = 10, range = [1, 10]) =>
-//   Array.from({ length }, () => Math.floor(Math.random() * (range[1] - range[0] + 1) + range[0]))
-
-const sumTwo = (x = 0, y = 0) => Number(x) + Number(y)
-const sum = (...nums) => nums.reduce(sumTwo)
-
-console.log('array: ', Array.from({ length: 10 - 2 + 1 }, (_, idx) => idx + 2))
-export const range = utilCreator({
-  utilName: 'range',
-  utilType: 'unaryUtil',
-  utilCode: {
-    'number': (length = 10, { from = 0, to = from + length } = {}) =>
-      Array.from({ length: (to && to - from) || length }, (_, idx) => idx + from)
-  }
-})
-const random = utilCreator({
+export const random = utilCreator({
   utilName: 'random',
   utilType: 'zeroUtil',
   utilCode: {
-    'any': ({ max } = {}) => Math.random() * max
+    'any': ({ from = 0, length = 10, to = from + length, int = false } = {}) => {
+      const newRandom = Math.random() * (to - from) + from
+      return int ? Math.floor(newRandom) : newRandom
+    }
   }
 })
-console.log(random({max:20}))
 
-/**
- * 约等于
- * @example
- * approximatelyEqual(Math.PI / 2.0, 1.5708); // true
- */
-const approximatelyEqual = utilCreator({
-  utilName: 'approximatelyEqual',
+export const range = utilCreator({
+  utilName: 'range',
+  utilType: 'zeroUtil',
+  utilCode: {
+    'any': ({ from = 0, length = 10, to = from + length } = {}) =>
+      Array.from({ length: to - from }, (_, idx) => idx + from)
+  }
+})
+
+export const mathEqual = utilCreator({
+  utilName: 'mathEqual',
   utilType: ['binaryUtil', 'judger'],
   utilCode: {
-    'number,number': (v1 = 1, v2 = 1, epsilon = 0.001) => Math.abs(v1 - v2) < epsilon
+    'number,number': (x = 1, y = 1, {} = {}) => {
+      return Math.abs(x - y) < Number.EPSILON
+    }
   }
 })

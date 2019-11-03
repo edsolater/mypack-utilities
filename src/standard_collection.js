@@ -58,6 +58,7 @@ export const count = utilCreator({
 export const flatten = utilCreator({
   utilName: 'flatten',
   utilCode: {
+    // 不推荐使用，用 Array.prototype.flat(Infinity) 以提升效率
     'Array': function flatten_core(arr, config = {}) {
       const { depth, judger, mutable } = config
       if (depth) return targetArray.flat(depth)

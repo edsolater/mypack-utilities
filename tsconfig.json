@@ -1,9 +1,5 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
     "declaration": true,
-    "outDir": "./build"
   },
-  "exclude": ["node_modules"]
 }

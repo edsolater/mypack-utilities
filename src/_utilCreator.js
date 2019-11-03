@@ -32,7 +32,7 @@ const pluginList = {
 }
 //#endregion
 const setConfig = (util, preConfig = {}) =>
-// 这个写法只适用于UnaryUtil，极其不灵活，需要仿照addTarget大改
+  // 这个写法只适用于UnaryUtil，极其不灵活，需要仿照addTarget大改
   Object.assign((tar, config = {}) => util(tar, { ...config, ...preConfig }), util, {
     isTemporaryUtil: true,
     hasConfig: true,
@@ -58,9 +58,7 @@ const addTarget = (util, ...preTargets) => {
       isTemporaryUtil: true,
       hasTarget: true,
       targetNumber: restTargetNumber,
-      targets: Array.isArray(util.targets)
-        ? util.targets.concat(willUsedTargets)
-        : willUsedTargets
+      targets: Array.isArray(util.targets) ? util.targets.concat(willUsedTargets) : willUsedTargets
     }
   )
 }
@@ -69,15 +67,15 @@ export const utilCreator = utilSetting => {
   const utilTargetNumber = Object.values(utilCode)[0].length //定义 Util 时不存在(...tars)=> 这种自由度过大的写法，但infinaryUtil在使用时可传任意数量的参数
   const infinaryUtil = (...params) => {
     const configObj = params.length === 2 && assertType(params[1], 'Object') && params.pop()
-    const targets = params.length === 1 && Array.isArray(params[0]) ? params[0] : params
-    const utilFunction = utilCode[type(targets[0]) + '[]'] || utilCode['any[]']
-    return utilFunction(...[...targets, configObj].filter(Boolean))
+    const targetArr = params.length === 1 && Array.isArray(params[0]) ? params[0] : params
+    const utilFunction = utilCode[type(targetArr[0]) + '[]'] || utilCode['any[]']
+    return utilFunction(targetArr, configObj)
   }
   const normalUtil = (...params) => {
     const configObj = params[utilTargetNumber]
     const targets = params.slice(0, utilTargetNumber)
     const utilFunction = utilCode[targets.map(type).join(',')] || utilCode['any']
-    return utilFunction(...[...targets, configObj].filter(Boolean))
+    return utilFunction(...targets, configObj)
   }
   const util = Object.assign(
     (utilSetting.utilType || 'unknown').includes('infinaryUtil') ? infinaryUtil : normalUtil,
@@ -88,7 +86,6 @@ export const utilCreator = utilSetting => {
       canMutate: utilSetting.canMutate || false,
       plugin,
       plugins,
-      isHighOrderFunction: utilSetting.isHighOrderFunction || false, //特殊标记
 
       // 由计算得到
       targetNumber: utilTargetNumber, //targetNumber值会变，它的值在生产环境下也会使用
@@ -96,7 +93,7 @@ export const utilCreator = utilSetting => {
 
       //计算属性 Todo
       get isZeroUtil() {
-        return this.utilType.includes('zeroUtil') 
+        return this.utilType.includes('zeroUtil')
       },
       get isUnaryUtil() {
         return this.utilType.includes('unaryUtil')
@@ -112,6 +109,9 @@ export const utilCreator = utilSetting => {
       },
       get isJudger() {
         return this.utilType.includes('judger')
+      },
+      get isHighOrderFunction() {
+        return this.utilType.includes('highOrderFunction')
       },
 
       //方法

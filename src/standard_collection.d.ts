@@ -68,6 +68,7 @@ export declare const compact: UnaryUtil<
 export declare const count: UnaryUtil<(arr: Val[]) => number>
 
 /**
+ * // 不推荐使用，用 Array.prototype.flat(Infinity) 以提升效率
  * 递归式地扁平化数组
  * - mutate 会深改变原数组
  *

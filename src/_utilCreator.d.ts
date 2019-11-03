@@ -17,6 +17,8 @@ type avaliableUtilType =
   | 'trinaryUtil'
   | 'infinaryUtil'
   | 'judger'
+  | 'highOrderFunction'
+
 interface Util {
   /**
    * 还需传入的 “元” 的数量
@@ -42,14 +44,20 @@ interface Util {
    * Util所使用的plugins
    */
   readonly plugins: ('memorize' | 'once')[]
+
   /**
    * 标记工具函数是否是个judger
    */
-  readonly isJudger: boolean
+  readonly isZeroUtil: boolean
+  readonly isUnaryUtil: boolean
+  readonly isBinaryUtil: boolean
+  readonly isTrinaryUtil: boolean
   /**
    * 标记工具函数是否是有特殊行为的InfinaryUtil
    */
   readonly isInfinaryUtil: boolean
+  readonly isJudger: boolean
+  readonly isHighOrderFunction: boolean
   /**
    * 添加 “元”，返回新临时Util
    */
@@ -141,8 +149,8 @@ type UtilCreator =
       'Object,string'?: UtilFunction
       'Object,Array'?: UtilFunction
       'Object,Object'?: UtilFunction
-      //多元
 
+      //任意元
       'boolean[]'?: UtilFunction
       'number[]'?: UtilFunction
       'string[]'?: UtilFunction
@@ -151,7 +159,7 @@ type UtilCreator =
 
       'any'?: UtilFunction //万能普通元
 
-      'any[]'?: UtilFunction //万能多元
+      'any[]'?: UtilFunction //万能元的别称（主要为了在任意元中能保持一致性）
 
       [propName: string]: UtilFunction
     }
