@@ -5,5 +5,5 @@ import { toCase } from './standard_string.js'
 
 all([1, 2], { judger: isFalsy })
 remove({ a: 'hello' }, { propNames: ['a'] })
-console.log(average(3, 4, 4, 4, 4, 4))
+console.log(average)
 console.log('result: ', toCase('helloWorld   Tdsdf-incorrect', { formatType: 'kebab-case' }))

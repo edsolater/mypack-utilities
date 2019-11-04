@@ -3,7 +3,6 @@ import { Mapper } from './_util_type_bucket'
 
 /**
  * 取平均值
- * @param {number[]} nums
  * @example
  * average(1, 2, 3); // 2
  * average({ n: 4 }, { n: 2 }, { n: 8 }, { n: 6 }, {by: o => o.n}) // 5

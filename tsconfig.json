@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
-    "declaration": true,
+    "target": "es2020",
+    "allowJs": true,
+    "checkJs": true,
+    "outDir": "build"
   },
+  "exclude": ["node_modules"]
 }

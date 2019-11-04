@@ -199,9 +199,11 @@ type TrinaryUtil<T extends (...any: any) => any> = Util & T
  * 可以是像一元函数的参数，第一参数必须有[]包裹，可以接受配置对象
  * 可以是无限参数，无需使用[]包裹，但不能接受配置对象
  */
-type InfinaryUtil<T> = Util & T & T extends ((
-  tars: Array<infer Tar>,
-  config?: infer Config
-) => infer Output)
-  ? (...tars: Tar[]) => Output
-  : never
+// type InfinaryUtil<T> = T & T extends ((
+//   tars: Array<infer Tar>,
+//   config?: infer Config
+// ) => infer Output)
+//   ? (...tars: Tar[]) => Output
+//   : never
+
+type InfinaryUtil<T> = {hello:string,b: number} & {hello: string, c: number}
