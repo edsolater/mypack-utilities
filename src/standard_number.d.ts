@@ -7,7 +7,7 @@ import { Mapper } from './_util_type_bucket'
  * average(1, 2, 3); // 2
  * average({ n: 4 }, { n: 2 }, { n: 8 }, { n: 6 }, {by: o => o.n}) // 5
  */
-export declare const average: InfinaryUtil<(nums: number[], config?: { by: Mapper }) => number>
+export declare const un_Average: InfinaryUtil<(nums: number[], config?: { by: Mapper }) => number>
 
 /**
  * 生成一个随机值

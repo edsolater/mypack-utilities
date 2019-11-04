@@ -1,9 +1,16 @@
 {
+  "compileOnSave": true,
   "compilerOptions": {
     "target": "es2020",
-    "allowJs": true,
-    "checkJs": true,
-    "outDir": "build"
+    "sourceMap": true,
+    "baseUrl": "./",
+    "module": "commonjs",
+    "declarationMap": true,
+    "declaration": true,
+    "declarationDir": "declaration",
+    "outDir": "./build",
+    "watch": true
   },
   "exclude": ["node_modules"]
 }
+// 迟早要全换成ts的，（这是在写库函数，如果结构合理，.ts比.js+.d.ts更清晰）

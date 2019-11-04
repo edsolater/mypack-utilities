@@ -1,7 +1,7 @@
 import { utilCreator } from './_utilCreator.js'
 import { emptyMapper } from './util_unknown.js'
 
-export const average = utilCreator({
+export const un_Average = utilCreator({
   utilName: 'average',
   utilType: ['infinaryUtil', 'judger'],
   utilCode: {

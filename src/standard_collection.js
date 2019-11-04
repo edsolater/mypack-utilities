@@ -4,9 +4,9 @@ import { getType, isDefined, assertType } from './util_unknown.js'
 // 这两个方法都不是谓语动词，是不是会增加心智负担，用作util不合适？
 export const all = utilCreator({
   utilName: 'all',
-  isJudger: true,
+  utilType: ['unaryUtil', 'judger'],
   utilCode: {
-    'Array': (arr, { judger } = {}) => arr.every(judger)
+    'any[]': (arr, { judger } = {}) => arr.every(judger)
   }
 })
 
@@ -14,7 +14,7 @@ export const all = utilCreator({
 //我总觉得这个跟上一个all方法调性不符
 export const allEqual = utilCreator({
   utilName: 'allEqual',
-  isJudger: true,
+  utilType: ['unaryUtil', 'judger'],
   utilCode: {
     'Array': arr => arr.every(val => val === arr[0])
   }
@@ -22,6 +22,7 @@ export const allEqual = utilCreator({
 
 export const remove = utilCreator({
   utilName: 'remove',
+  utilType: 'unaryUtil',
   utilCode: {
     'Array': ([...arr], { indexes = [] } = {}) => {
       indexes.forEach(idx => (arr[idx] = undefined))

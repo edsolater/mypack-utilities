@@ -52,9 +52,6 @@ interface Util {
   readonly isUnaryUtil: boolean
   readonly isBinaryUtil: boolean
   readonly isTrinaryUtil: boolean
-  /**
-   * 标记工具函数是否是有特殊行为的InfinaryUtil
-   */
   readonly isInfinaryUtil: boolean
   readonly isJudger: boolean
   readonly isHighOrderFunction: boolean
@@ -195,15 +192,7 @@ type BinaryUtil<T extends (...any: any) => any> = Util & T
 type TrinaryUtil<T extends (...any: any) => any> = Util & T
 /**
  * 无限元Util
- * 比较特殊，
- * 可以是像一元函数的参数，第一参数必须有[]包裹，可以接受配置对象
- * 可以是无限参数，无需使用[]包裹，但不能接受配置对象
+ * 比较特殊
  */
-// type InfinaryUtil<T> = T & T extends ((
-//   tars: Array<infer Tar>,
-//   config?: infer Config
-// ) => infer Output)
-//   ? (...tars: Tar[]) => Output
-//   : never
+type InfinaryUtil<T extends (...any: any) => any> = Util & T
 
-type InfinaryUtil<T> = {hello:string,b: number} & {hello: string, c: number}

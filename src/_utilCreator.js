@@ -6,6 +6,17 @@ const type = val => {
     return typeof val
   }
 }
+const uGetType = val => {
+  if (Array.isArray(val)) {
+    return `${uGetType(val[0])}[]`
+  } else if (typeof val === 'object') {
+    return Object.prototype.toString.call(val).slice(8, -1)
+  } else {
+    return typeof val
+  }
+}
+console.log('uGetType: ', uGetType([['s']]))
+
 const assertType = (val, typeString) => type(val) === typeString
 
 //#region 额外的功能模块
@@ -65,20 +76,15 @@ const addTarget = (util, ...preTargets) => {
 export const utilCreator = utilSetting => {
   const { utilCode, plugin /* 这其实是个快捷方式 */, plugins = [plugin] } = utilSetting
   const utilTargetNumber = Object.values(utilCode)[0].length //定义 Util 时不存在(...tars)=> 这种自由度过大的写法，但infinaryUtil在使用时可传任意数量的参数
-  const infinaryUtil = (...params) => {
-    const configObj = params.length === 2 && assertType(params[1], 'Object') && params.pop()
-    const targetArr = params.length === 1 && Array.isArray(params[0]) ? params[0] : params
-    const utilFunction = utilCode[type(targetArr[0]) + '[]'] || utilCode['any[]']
-    return utilFunction(targetArr, configObj)
-  }
-  const normalUtil = (...params) => {
-    const configObj = params[utilTargetNumber]
-    const targets = params.slice(0, utilTargetNumber)
-    const utilFunction = utilCode[targets.map(type).join(',')] || utilCode['any']
-    return utilFunction(...targets, configObj)
-  }
   const util = Object.assign(
-    (utilSetting.utilType || 'unknown').includes('infinaryUtil') ? infinaryUtil : normalUtil,
+    (...params) => {
+      const configObj = params[utilTargetNumber]
+      const targets = params.slice(0, utilTargetNumber)
+      console.log('targets: ', targets)
+      const utilFunction =
+        utilCode[targets.map(uGetType).join(',')] || utilCode['any'] || utilCode['any[]'] // 这一步是基于类型做判断，是否把它全部交给Typescript以减少不必要的性能开销？
+      return utilFunction(...targets, configObj)
+    },
     {
       // 直接由设定得到
       utilName: utilSetting.utilName || 'unknown',
