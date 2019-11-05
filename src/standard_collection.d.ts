@@ -2,24 +2,6 @@ import { UnaryUtil, Judger } from './_utilCreator'
 import { Val } from './_util_type_bucket'
 
 /**
- * 布尔全等判断
- * @example
- * all([4, 2, 3], {judger: x => x > 1}); // true
- * all([1, 2, 3]); // true
- */
-export declare const all: UnaryUtil<
-  (
-    arr: any[],
-    config?: {
-      /**
-       * 用于对每个值做出判断
-       */
-      judger?: Judger
-    }
-  ) => boolean
->
-
-/**
  * 检查数组各项相等
  * @example
  * allEqual([1, 2, 3, 4, 5, 6]); // false
