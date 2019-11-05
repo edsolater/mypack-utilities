@@ -3,11 +3,11 @@ import { utilCreator } from './_utilCreator.js'
 /**
  * 各种写法的互转：PascalCase\camelCase\
  * @example
- * toCase('PascalCase', 'fooBar'); // 'FooBar'
- * toCase('camelCase', 'FooBar'); // 'fooBar'
- * toCase('white space', 'fooBar'); // 'foo Bar'
- * toCase('kebab-case', 'fooBar'); // 'foo-bar'
- * toCase('snack_case', 'fooBar'); // 'foo_bar'
+ * toCase('fooBar', {formatType: 'PascalCase'}); // 'FooBar'
+ * toCase('FooBar', {formatType: 'camelCase'}); // 'fooBar'
+ * toCase('fooBar', {formatType: 'white space'}); // 'foo Bar'
+ * toCase('fooBar', {formatType: 'kebab-case'}); // 'foo-bar'
+ * toCase('fooBar', {formatType: 'snack_case'}); // 'foo_bar'
  */
 
 export const toCase = utilCreator({

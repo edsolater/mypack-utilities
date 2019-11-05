@@ -2,14 +2,6 @@ import { UnaryUtil, Judger } from './_utilCreator'
 import { Val } from './_util_type_bucket'
 
 /**
- * 检查数组各项相等
- * @example
- * allEqual([1, 2, 3, 4, 5, 6]); // false
- * allEqual([1, 1, 1, 1]); // true
- */
-export declare const allEqual: UnaryUtil<(arr: any[]) => boolean>
-
-/**
  * 去除固定位置的值
  * @example
  * remove(['beep', 'boop', 'foo', 'bar'], {indexes:[1,2,0]}) // ['bar']
@@ -144,7 +136,6 @@ export declare const pickRandomly: UnaryUtil<{
 }>
 
 /**
- * **迟早要作为一个 overload 并入 flatten 方法的实现中。并将flattenObject作为一个函数的预定义形式**
  * 以键的路径扁平化对象
  * @example
  * flattenObject({ a: { b: { c: 1 } }, d: 1 }); // { 'a.b.c': 1, d: 1 }

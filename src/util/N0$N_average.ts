@@ -1,4 +1,4 @@
-import { Mapper, emptyMapper, UnaryUtil } from './_core_type'
+import { Mapper, emptyMapper, UnaryUtil } from './##core_type'
 
 /**
  * 取平均值
@@ -20,7 +20,7 @@ export const average = (
       nums
         .filter(Boolean)
         .map(before)
-        .reduce((acc: number, val: number) => acc + val, 0)
+        .reduce((acc: number, Tar: number) => acc + Tar, 0)
     ) / nums.length
   )
 }
@@ -28,6 +28,6 @@ export const average = (
 /**
  * 取平均值
  * @example
- * U_N_average([1, 2, 3]); // 2
+ * N0$N_average([1, 2, 3]); // 2
  */
-export const U_N_average: UnaryUtil<typeof average> = average
+export const N0$N_average: UnaryUtil<typeof average> = average

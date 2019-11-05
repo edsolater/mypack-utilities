@@ -1,4 +1,4 @@
-import { Judger, UnaryUtil } from './_core_type'
+import { Judger, UnaryUtil, Tar } from './##core_type'
 
 /**
  * 布尔全等判断
@@ -7,7 +7,7 @@ import { Judger, UnaryUtil } from './_core_type'
  * all([1, 2, 3]); // true
  */
 export const all = (
-  arr: any[],
+  arr: Tar[],
   config: {
     judger?: Judger
   } = {}
@@ -19,7 +19,7 @@ export const all = (
 /**
  * 布尔全等判断
  * @example
- * I_B_all([4, 2, 3], {judger: x => x > 1}); // true
- * I_B_all([1, 2, 3]); // true
+ * T0$B_all([4, 2, 3], {judger: x => x > 1}); // true
+ * T0$B_all([1, 2, 3]); // true
  */
-export const I_B_all: UnaryUtil<typeof all> = all
+export const T0$B_all: UnaryUtil<typeof all> = all

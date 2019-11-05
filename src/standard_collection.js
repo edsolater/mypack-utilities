@@ -38,10 +38,14 @@ export const count = utilCreator({
   }
 })
 
+
+/**
+ * @myTag 待废弃
+ */
 export const flatten = utilCreator({
   utilName: 'flatten',
   utilCode: {
-    // 不推荐使用，用 Array.prototype.flat(Infinity) 以提升效率
+    // 不推荐使用，推荐使用 Array.prototype.flat(Infinity) 。原生代码速度更快
     'Array': function flatten_core(arr, config = {}) {
       const { depth, judger, mutable } = config
       if (depth) return targetArray.flat(depth)
@@ -63,6 +67,7 @@ export const flatten = utilCreator({
   }
 })
 
+// 这里find，单独提出
 export const find = utilCreator({
   utilName: 'find',
   utilCode: {
@@ -107,6 +112,10 @@ export const shuffle = utilCreator({
   }
 })
 
+/**
+ * @myTag 废弃
+ * object的规则并不直观，当pickNumber不是1时，其行为也并不直观
+ */
 const core_pickRandomly_pickOne = arr => arr[Math.floor(Math.random() * arr.length)]
 const core_pickRandomly_pickMulti = (arr, pickNumber) => shuffle([...arr]).slice(0, pickNumber)
 export const pickRandomly = utilCreator({

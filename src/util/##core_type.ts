@@ -4,7 +4,7 @@ export interface Mapper {
   (...any: any[]): any
 }
 
-export const emptyMapper = val => val
+export const emptyMapper = Tar => Tar
 /**
  * 零元Util 专用于凭空创造出一个对象来，本身只接收配置对象
  */
@@ -24,4 +24,4 @@ export type TrinaryUtil<T extends (tar1: any, tar2: any, tar3: any, config?: Con
 
 
 export type Judger = (...any) => boolean
-export type Val = any
+export type Tar = any

@@ -1,4 +1,4 @@
-import { ZeroUtil } from './_core_type'
+import { ZeroUtil } from './##core_type'
 
 /**
  * 生成一个随机值
@@ -36,6 +36,6 @@ export const random = (
 /**
  * 生成一个随机值
  * @example
- * Z_N_random({max: 20}) // 13.915759733207409
+ * _$N_random({max: 20}) // 13.915759733207409
  */
-export const Z_N_random: ZeroUtil<typeof random> = random
+export const _$N_random: ZeroUtil<typeof random> = random

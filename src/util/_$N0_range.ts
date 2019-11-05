@@ -1,4 +1,4 @@
-import { ZeroUtil } from './_core_type'
+import { ZeroUtil } from './##core_type'
 
 /**
  * 生成一个范围的数组
@@ -31,6 +31,6 @@ export const range = (
 /**
  * 生成一个范围的数组
  * @example
- * Z_N0_range({from: 3, to: 10}) // [3,4,5,6,7,8,9,10]
+ * _$N0_range({from: 3, to: 10}) // [3,4,5,6,7,8,9,10]
  */
-export const Z_N0_range: ZeroUtil<typeof range> = range
+export const _$N0_range: ZeroUtil<typeof range> = range
