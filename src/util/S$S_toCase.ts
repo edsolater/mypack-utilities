@@ -1,5 +1,3 @@
-import { Mapper, emptyMapper, UnaryUtil } from './##core_type'
-
 /**
  * 各种写法的互转，可转换成：PascalCase \ camelCase \ white space \ kebab-case \ snack_case
  * @example
@@ -43,7 +41,6 @@ export const toCase = (
   }
 }
 const splitSentence = (str = '') => {
-  console.log(str)
   return str.match(/[a-z]+(?=[ _-])|[a-z]+$|^[a-z]+|[A-Z][a-z]+/g)
 }
 const capitalize = ([firstLetter = '', ...restLeters]: string) =>
@@ -58,4 +55,4 @@ const capitalize = ([firstLetter = '', ...restLeters]: string) =>
  * S$S_toCase('fooBar', {formatType: 'kebab-case'}); // 'foo-bar'
  * S$S_toCase('fooBar', {formatType: 'snack_case'}); // 'foo_bar'
  */
-export const S$S_toCase: UnaryUtil<typeof toCase> = toCase
+export const S$S_toCase = toCase

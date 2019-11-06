@@ -1,5 +1,3 @@
-import { BinaryUtil } from './##core_type'
-
 /**
  * 约等于
  * @example
@@ -14,4 +12,4 @@ export const mathEqual = (x: number, y: number) => {
  * @example
  * NN$B_mathEqual(Math.PI / 2.0, 1.5708); // true
  */
-export const NN$B_mathEqual: BinaryUtil<typeof mathEqual> = mathEqual
+export const NN$B_mathEqual = mathEqual

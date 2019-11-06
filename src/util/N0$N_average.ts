@@ -1,4 +1,5 @@
-import { Mapper, emptyMapper, UnaryUtil } from './##core_type'
+import { Mapper } from './#package_type'
+import { emptyMapper } from './#package_defaultFunction'
 
 /**
  * 取平均值
@@ -11,15 +12,15 @@ export const average = (
     /**
      * 处理之前的Mapper
      */
-    before?: Mapper
+    by?: Mapper
   } = {}
 ) => {
-  const { before = emptyMapper } = config
+  const { by = emptyMapper } = config
   return (
     Number(
       nums
         .filter(Boolean)
-        .map(before)
+        .map(by)
         .reduce((acc: number, Tar: number) => acc + Tar, 0)
     ) / nums.length
   )
@@ -30,4 +31,4 @@ export const average = (
  * @example
  * N0$N_average([1, 2, 3]); // 2
  */
-export const N0$N_average: UnaryUtil<typeof average> = average
+export const N0$N_average = average

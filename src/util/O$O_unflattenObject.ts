@@ -1,5 +1,3 @@
-import { UnaryUtil } from './##core_type'
-
 function _unflattenObject(obj: object, config:{pathSlicer?: string, restKey?: string} = {}) {
   return Object.entries(obj).reduce((acc, [key, value]) => {
     const { pathSlicer = '.', restKey: oldRestKeys } = config
@@ -38,4 +36,4 @@ export const unflattenObject = (
  * @example
  * O$O_unflattenObject({ 'a.b.c': 1, d: 1 }); // { a: { b: { c: 1 } }, d: 1 }
  */
-export const O$O_unflattenObject: UnaryUtil<typeof unflattenObject> = unflattenObject
+export const O$O_unflattenObject = unflattenObject

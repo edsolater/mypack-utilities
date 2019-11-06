@@ -1,4 +1,4 @@
-import { UnaryUtil, Tar } from './##core_type'
+import { Tar } from './#package_type'
 
 /**
  * “洗牌”数组
@@ -32,4 +32,4 @@ export const shuffle = (
  * @example
  * T0$T0_shuffle([2,3,4,5,6]) // [3,5,2,6,4]
  */
-export const T0$T0_shuffle: UnaryUtil<typeof shuffle> = shuffle
+export const T0$T0_shuffle = shuffle

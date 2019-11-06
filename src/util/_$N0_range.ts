@@ -1,5 +1,3 @@
-import { ZeroUtil } from './##core_type'
-
 /**
  * 生成一个范围的数组
  * @example
@@ -24,7 +22,9 @@ export const range = (
     length?: number
   } = {}
 ) => {
-  const { from = 0, length = 10, to = from + length } = config
+  const { length = 10 } = config
+  const { from = (config.to || 0) - length } = config
+  const { to = (config.from || 0) + length } = config
   return Array.from({ length: to - from }, (_, idx) => idx + from)
 }
 
@@ -33,4 +33,4 @@ export const range = (
  * @example
  * _$N0_range({from: 3, to: 10}) // [3,4,5,6,7,8,9,10]
  */
-export const _$N0_range: ZeroUtil<typeof range> = range
+export const _$N0_range = range

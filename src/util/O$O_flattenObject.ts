@@ -1,5 +1,4 @@
-import { UnaryUtil } from './##core_type'
-
+//TODO: 这个方法的generic似乎很难
 function _flattenObject(
   obj,
   config: {
@@ -41,4 +40,4 @@ export const flattenObject = (
  * @example
  * O$O_flattenObject({ a: { b: { c: 1 } }, d: 1 }); // { 'a.b.c': 1, d: 1 }
  */
-export const O$O_flattenObject: UnaryUtil<typeof flattenObject> = flattenObject
+export const O$O_flattenObject = flattenObject

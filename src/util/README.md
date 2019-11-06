@@ -23,3 +23,5 @@ Utilities 列表
 - `T0$T_pickRandomly`: 名称 pickRandomly, 类型 unaryUtil, 输入 Tar[], 输出 number
 - `O$O_flattenObject`: 名称 flattenObject, 类型 unaryUtil, 输入 object, 输出 object
 - `O$O_unflattenObject`: 名称 unflattenObject, 类型 unaryUtil, 输入 object, 输出 object
+- `T0$Oval_arrayClassify`: 名称 arrayClassify, 类型 unaryUtil, 输入 Tar[], 输出 object
+- `T0$N0_findIndexAll`: 名称 findIndexAll, 类型 unaryUtil, 输入 Tar[], 输出 number[]
