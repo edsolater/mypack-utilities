@@ -14,10 +14,10 @@ export const findIndexAll = <T>(
     /**
      * 用于比较的函数
      */
-    with?: Compatator
-  } = { with: defaultCompatator }
+    compatator?: Compatator
+  } = { compatator: defaultCompatator }
 ): number[] => {
-  const { item, with: compatator } = config
+  const { item, compatator } = config
   return arr.reduce((acc, tar, idx) => {
     if (compatator(tar, item)) acc.push(idx)
     return acc

@@ -10,14 +10,16 @@ export const findAll = <T>(
     /**
      * 判断条件
      */
-    when?: Judger
-  } = { when: defaultJudger }
-): number[] => {
-  const { when } = config
+    judger?: Judger
+  } = { judger: defaultJudger }
+): T[] => {
+  const { judger } = config
   return arr.reduce((acc, tar) => {
-    if (when(tar)) acc.push(tar)
+    if (judger(tar)) acc.push(tar)
     return acc
   }, [])
 }
-
+/**
+ * 类似于Array.prototype.find，但是是寻找所有的可能
+ */
 export const T0$T0_findAll = findAll
