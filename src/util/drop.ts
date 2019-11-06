@@ -1,11 +1,11 @@
-import { Tar, Judger } from './#package_type'
+import { Judger } from './#package_type'
 
 /**
  * 按条件(judger)数组中的某些值
  * @example
- * compact(['hello', 0, 1, true], { dropItems: [0] }) // ['hello', 1, true]
+ * drop(['hello', 0, 1, true], { dropItems: [0] }) // ['hello', 1, true]
  */
-export const compact = <T>(
+export const drop = <T>(
   arr: T[],
   config: {
     /**
@@ -21,10 +21,3 @@ export const compact = <T>(
   const { dropItems, judger } = config
   return arr.filter((tar) => judger(tar) || !dropItems.includes(tar))
 }
-
-/**
- * 按条件(judger)数组中的某些值
- * @example
- * T0$T0_compact(['hello', 0, 1, true], { dropItems: [0] }) // ['hello', 1, true]
- */
-export const T0$T0_compact = compact

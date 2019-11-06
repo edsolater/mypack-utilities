@@ -1,9 +1,9 @@
 /**
  * 生成一个随机值
  * @example
- * random({max: 20}) // 13.915759733207409
+ * createRandom({max: 20}) // 13.915759733207409
  */
-export const random = (
+export const createRandom = (
   config: {
     /**
      * 指定可取到的最小值
@@ -26,9 +26,3 @@ export const random = (
   return outputInt ? Math.floor(newRandom) : newRandom
 }
 
-/**
- * 生成一个随机值
- * @example
- * _$N_random({max: 20}) // 13.915759733207409
- */
-export const _$N_random = random

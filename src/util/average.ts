@@ -26,9 +26,3 @@ export const average = (
   )
 }
 
-/**
- * 取平均值
- * @example
- * N0$N_average([1, 2, 3]); // 2
- */
-export const N0$N_average = average

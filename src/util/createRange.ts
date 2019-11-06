@@ -1,9 +1,9 @@
 /**
  * 生成一个范围的数组
  * @example
- * range({from: 3, to: 10}) // [3,4,5,6,7,8,9,10]
+ * createRange({from: 3, to: 10}) // [3,4,5,6,7,8,9,10]
  */
-export const range = (
+export const createRange = (
   config: {
     /**
      * 指定开头的值
@@ -28,9 +28,4 @@ export const range = (
   return Array.from({ length: to - from }, (_, idx) => idx + from)
 }
 
-/**
- * 生成一个范围的数组
- * @example
- * _$N0_range({from: 3, to: 10}) // [3,4,5,6,7,8,9,10]
- */
-export const _$N0_range = range
+

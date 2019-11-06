@@ -1,13 +1,11 @@
-import { Tar } from './#package_type'
-
 /**
  * “洗牌”数组
  * @mutate
  * @example
  * shuffle([2,3,4,5,6]) // [3,5,2,6,4]
  */
-export const shuffle = (
-  arr: Tar[],
+export const shuffle = <T>(
+  arr: T[],
   config: {
     /**
      * 运算会改变原数组，默认的方法是 immutable 的
@@ -25,11 +23,3 @@ export const shuffle = (
   }
   return arr
 }
-
-/**
- * “洗牌”数组
- * @mutate
- * @example
- * T0$T0_shuffle([2,3,4,5,6]) // [3,5,2,6,4]
- */
-export const T0$T0_shuffle = shuffle

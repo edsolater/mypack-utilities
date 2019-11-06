@@ -11,22 +11,21 @@ Utilities 列表
 - Oval: object 的 value 值
 - Okey: object 的 key 值
 
-
-| complexUtilName        | utilName        | class      | input         | output   |
-| ---------------------- | --------------- | ---------- | ------------- | -------- |
-| \_\$N_random           | random          | zeroUtil   |               | number   |
-| \_\$N0_range           | range           | zeroUtil   |               | number[] |
-| N0\$N_average          | average         | unaryUtil  | number[]      | number   |
-| NN\$B_mathEqual        | mathEqual       | binaryUtil | number,number | boolean  |
-| S\$S_toCase            | toCase          | unaryUtil  | string        | string   |
-| T0\$B_all              | all             | unaryUtil  | Tar[]         | boolean  |
-| T0\$B_allTheSame       | allTheSame      | unaryUtil  | Tar[]         | boolean  |
-| T0\$T0_compact         | compact         | unaryUtil  | Tar[]         | Tar[]    |
-| T0\$N_count            | count           | unaryUtil  | Tar[]         | number   |
-| T0\$T0_shuffle         | shuffle         | unaryUtil  | Tar[]         | Tar[]    |
-| T0\$T_pickRandomly     | pickRandomly    | unaryUtil  | Tar[]         | number   |
-| O\$O_flattenObject     | flattenObject   | unaryUtil  | object        | object   |
-| O\$O_unflattenObject   | unflattenObject | unaryUtil  | object        | object   |
-| T0\$Oval_arrayClassify | arrayClassify   | unaryUtil  | Tar[]         | object   |
-| T0\$N0_findIndexAll    | findIndexAll    | unaryUtil  | Tar[]         | number[] |
-| T0\$T0_findAll         | findAll         | unaryUtil  | Tar[]         | Tar[]    |
+| utilName        | class      | input         | output   |
+| --------------- | ---------- | ------------- | -------- |
+| createRandom    | zeroUtil   |               | number   |
+| range           | zeroUtil   |               | number[] |
+| average         | unaryUtil  | number[]      | number   |
+| numberEqual     | binaryUtil | number,number | boolean  |
+| toCase          | unaryUtil  | string        | string   |
+| all             | unaryUtil  | Tar[]         | boolean  |
+| allTheSame      | unaryUtil  | Tar[]         | boolean  |
+| drop            | unaryUtil  | Tar[]         | Tar[]    |
+| count           | unaryUtil  | Tar[]         | number   |
+| shuffle         | unaryUtil  | Tar[]         | Tar[]    |
+| pickRandomly    | unaryUtil  | Tar[]         | number   |
+| flattenObject   | unaryUtil  | object        | object   |
+| unflattenObject | unaryUtil  | object        | object   |
+| arrayClassify   | unaryUtil  | Tar[]         | object   |
+| findIndexAll    | unaryUtil  | Tar[]         | number[] |
+| findAll         | unaryUtil  | Tar[]         | Tar[]    |

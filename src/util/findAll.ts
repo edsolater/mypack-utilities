@@ -19,7 +19,4 @@ export const findAll = <T>(
     return acc
   }, [])
 }
-/**
- * 类似于Array.prototype.find，但是是寻找所有的可能
- */
-export const T0$T0_findAll = findAll
+

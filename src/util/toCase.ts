@@ -46,13 +46,4 @@ const splitSentence = (str = '') => {
 const capitalize = ([firstLetter = '', ...restLeters]: string) =>
   [firstLetter.toUpperCase(), ...restLeters].join('')
 
-/**
- * 各种写法的互转，可转换成：PascalCase \ camelCase \ white space \ kebab-case \ snack_case
- * @example
- * S$S_toCase('fooBar', {formatType: 'PascalCase'}); // 'FooBar'
- * S$S_toCase('FooBar', {formatType: 'camelCase'}); // 'fooBar'
- * S$S_toCase('fooBar', {formatType: 'white space'}); // 'foo Bar'
- * S$S_toCase('fooBar', {formatType: 'kebab-case'}); // 'foo-bar'
- * S$S_toCase('fooBar', {formatType: 'snack_case'}); // 'foo_bar'
- */
-export const S$S_toCase = toCase
+

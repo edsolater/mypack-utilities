@@ -25,11 +25,3 @@ export const arryCalssify = <O extends { [lavel: string]: Judger }, T>(
     return acc
   }, {})
 }
-
-/**
- * 按条件从数据的集合中细分信息
- * @example
- * arryCalssify([3, 5, 8], { labelPattern: { a: (tar) => tar > 6, b: (tar) => tar < 4 } }) // {a: [8], b: [3]}
- */
-export const T0$Oval_arrayClassify = arryCalssify
-

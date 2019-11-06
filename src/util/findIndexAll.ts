@@ -23,5 +23,3 @@ export const findIndexAll = <T>(
     return acc
   }, [])
 }
-
-export const T0$N0_findIndexAll = findIndexAll

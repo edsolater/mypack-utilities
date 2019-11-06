@@ -1,1 +1,5 @@
 /node_modules
+
+# tsc 构建出来的
+/out
+/declaration

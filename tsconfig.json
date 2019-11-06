@@ -1,15 +1,9 @@
 {
-  "compileOnSave": true,
   "compilerOptions": {
     "target": "es2020",
-    "sourceMap": true,
-    "baseUrl": "./",
     "module": "commonjs",
-    "declarationMap": true,
-    "declaration": true,
-    "declarationDir": "declaration",
-    "outDir": "./build",
-    "watch": true
+    "outDir": "./out",
+    "sourceMap": true
   },
   "exclude": ["node_modules"]
 }

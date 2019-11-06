@@ -16,10 +16,4 @@ export const all = (
   return arr.every(judger)
 }
 
-/**
- * 布尔全等判断
- * @example
- * T0$B_all([4, 2, 3], {judger: x => x > 1}); // true
- * T0$B_all([1, 2, 3]); // true
- */
-export const T0$B_all = all
+
