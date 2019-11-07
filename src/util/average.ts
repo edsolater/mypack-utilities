@@ -1,5 +1,5 @@
 import { Mapper } from './#package_type'
-import { emptyMapper } from './#package_defaultFunction'
+import { defaultMapper } from './#package_defaultFunction'
 
 /**
  * 取平均值
@@ -15,7 +15,7 @@ export const average = (
     by?: Mapper
   } = {}
 ) => {
-  const { by = emptyMapper } = config
+  const { by = defaultMapper } = config
   return (
     Number(
       nums
@@ -25,4 +25,3 @@ export const average = (
     ) / nums.length
   )
 }
-

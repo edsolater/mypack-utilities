@@ -3,29 +3,25 @@
 
 Utilities 列表
 
-- B: boolean
-- N: number
-- S: string
-- O: object
-- T: Target(目前相当于 any)
-- Oval: object 的 value 值
-- Okey: object 的 key 值
-
-| utilName        | class      | input         | output   |
-| --------------- | ---------- | ------------- | -------- |
-| createRandom    | zeroUtil   |               | number   |
-| range           | zeroUtil   |               | number[] |
-| average         | unaryUtil  | number[]      | number   |
-| numberEqual     | binaryUtil | number,number | boolean  |
-| toCase          | unaryUtil  | string        | string   |
-| all             | unaryUtil  | Tar[]         | boolean  |
-| allTheSame      | unaryUtil  | Tar[]         | boolean  |
-| drop            | unaryUtil  | Tar[]         | Tar[]    |
-| count           | unaryUtil  | Tar[]         | number   |
-| shuffle         | unaryUtil  | Tar[]         | Tar[]    |
-| pickRandomly    | unaryUtil  | Tar[]         | number   |
-| flattenObject   | unaryUtil  | object        | object   |
-| unflattenObject | unaryUtil  | object        | object   |
-| arrayClassify   | unaryUtil  | Tar[]         | object   |
-| findIndexAll    | unaryUtil  | Tar[]         | number[] |
-| findAll         | unaryUtil  | Tar[]         | Tar[]    |
+| utilName                                | class      | input           | output   | 备注         |
+| --------------------------------------- | ---------- | --------------- | -------- | ------------ |
+| [createRandom](./createRandom.ts)       | zeroUtil   |                 | number   |              |
+| [range](./range.ts)                     | zeroUtil   |                 | number[] |              |
+| [all](./all.ts)                         | unaryUtil  | Tar[]           | boolean  |              |
+| [allTheSame](./allTheSame.ts)           | unaryUtil  | Tar[]           | boolean  |              |
+| [drop](./drop.ts)                       | unaryUtil  | Tar[]           | Tar[]    |              |
+| [count](./count.ts)                     | unaryUtil  | Tar[]           | number   |              |
+| [shuffle](./shuffle.ts)                 | unaryUtil  | Tar[]           | Tar[]    |              |
+| [pickRandomly](./pickRandomly.ts)       | unaryUtil  | Tar[]           | number   |              |
+| [arrayClassify](./arrayClassify.ts)     | unaryUtil  | Tar[]           | object   |              |
+| [findIndexAll](./findIndexAll.ts)       | unaryUtil  | Tar[]           | number[] |              |
+| [findAll](./findAll.ts)                 | unaryUtil  | Tar[]           | Tar[]    |              |
+| [average](./average.ts)                 | unaryUtil  | number[]        | number   |              |
+| [toCase](./toCase.ts)                   | unaryUtil  | string          | string   |              |
+| [unflattenObject](./unflattenObject.ts) | unaryUtil  | object          | object   |              |
+| [flattenObject](./flattenObject.ts)     | unaryUtil  | object          | object   |              |
+| [numberEqual](./numberEqual.ts)         | binaryUtil | number,number   | boolean  |              |
+| [difference](./difference.ts)           | binaryUtil | Tar[],Tar[]     | Tar[]    |              |
+| [intersection](./intersection.ts)       | binaryUtil | Tar[],Tar[]     | Tar[]    |              |
+| [union](./union.ts)                     | binaryUtil | Tar[],Tar[]     | Tar[]    |              |
+| [forEachEntries](./forEachEntries.ts)   | binaryUtil | object,callback | void     | 这就是个简写 |

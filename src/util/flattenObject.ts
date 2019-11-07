@@ -34,5 +34,3 @@ function _flattenObject(
     )
   }, {})
 }
-
-const a = flattenObject({ a: { b: { c: 1 } }, d: 1 })

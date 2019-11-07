@@ -1,5 +1,5 @@
-import { Judger } from 'src/trash/_utilCreator'
 import { defaultJudger } from './#package_defaultFunction'
+import { Judger } from './#package_type'
 
 /**
  * 类似于Array.prototype.find，但是是寻找所有的可能
