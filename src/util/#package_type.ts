@@ -48,7 +48,7 @@ type Range<N, T extends number[] = []> = {
 
 
 // /** Tests if N > M */
-// type IsGreaterThan<N, M> = N extends Exclude<Range<N>, Range<M>> ? true : false;
+// export type IsGreaterThan<N, M> = N extends Exclude<Range<N>, Range<M>> ? true : false;
 // /** Tests if N <= M */
 // type IsLessThanOrEqual<N, M> = Not<IsGreaterThan<N, M>>;
 // /** Tests if N < M */
@@ -127,3 +127,5 @@ type MinusOne<T extends number> = [
 
 export type LastType<T extends any[]> = T[MinusOne<GetLength<T>>]
 export type FirstType<T extends any[]> = T[0]
+
+export type Tuple<TItem, TLength extends number> = [TItem, ...TItem[]] & { length: TLength }

@@ -11,7 +11,7 @@ Utilities 列表
 | [drop](./drop.ts)                       | unaryUtil    | Tar[]            | Tar[]         |                                  |
 | [count](./count.ts)                     | unaryUtil    | Tar[]            | number        |                                  |
 | [shuffle](./shuffle.ts)                 | unaryUtil    | Tar[]            | Tar[]         |                                  |
-| [pickRandomly](./pickRandomly.ts)       | unaryUtil    | Tar[]            | number        |                                  |
+| [randomlyPluck](./randomlyPluck.ts)       | unaryUtil    | Tar[]            | number        |                                  |
 | [arrayClassify](./arrayClassify.ts)     | unaryUtil    | Tar[]            | object        |                                  |
 | [findIndexAll](./findIndexAll.ts)       | unaryUtil    | Tar[]            | number[]      |                                  |
 | [findAll](./findAll.ts)                 | unaryUtil    | Tar[]            | Tar[]         |                                  |
