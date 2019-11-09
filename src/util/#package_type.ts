@@ -3,7 +3,9 @@ export type Mapper = (...any: any[]) => any
 export type Judger = (...any: any[]) => boolean
 export type Compatator = (x: any, y: any) => boolean
 export type AsyncFunction = (...any: any[]) => Promise<any>
-export type Function = (...any: any[]) => any
+export type Function = { (...any: any[]): any; [layout: string]: any }
+export type CashedFunction = Function & { cache: any }
+export type Util = Function
 
 /**
  * Creates a union from the types of an Array or tuple
@@ -25,7 +27,6 @@ export type Tail<T extends any[]> = ((...args: T) => any) extends ((
   ? R
   : never
 
-
 /**
  * Returns the given tuple/array with the item type prepended to it
  */
@@ -45,8 +46,6 @@ type Range<N, T extends number[] = []> = {
   1: Range<N, Unshift<T, GetLength<T>>>
 }[Equals<GetLength<Tail<T>>, N> extends true ? 0 : 1]
 
-
-
 // /** Tests if N > M */
 // export type IsGreaterThan<N, M> = N extends Exclude<Range<N>, Range<M>> ? true : false;
 // /** Tests if N <= M */
@@ -55,7 +54,6 @@ type Range<N, T extends number[] = []> = {
 // type IsLessThan<N, M> = M extends Exclude<Range<M>, Range<N>> ? true : false;
 // /** Tests if N >= M */
 // type IsGreaterThanOrEqual<N, M> = Not<IsLessThan<N, M>>;
-
 
 type MinusOne<T extends number> = [
   -1,
@@ -123,7 +121,6 @@ type MinusOne<T extends number> = [
   61,
   62
 ][T]
-
 
 export type LastType<T extends any[]> = T[MinusOne<GetLength<T>>]
 export type FirstType<T extends any[]> = T[0]

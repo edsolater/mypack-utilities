@@ -5,6 +5,6 @@
     "outDir": "./out",
     "sourceMap": true
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules","src/trash"]
 }
 // 迟早要全换成ts的，（这是在写库函数，如果结构合理，.ts比.js+.d.ts更清晰）

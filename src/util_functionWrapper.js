@@ -99,12 +99,6 @@ export const pipe = (...fns) => {
     return fns.reduce((fn1, fn2) => (...args) => fn2(fn1(...args)))
   }
 }
-/**
- * 反转 judger 的判断条件
- * @example
- * [1, 2, 3, 4, 5, 6].filter(negate(isEven)) // 结果上等同于：[1, 2, 3, 4, 5, 6].filter(isOdd)
- */
-const negate = fn => (...args) => !fn(...args)
 
 /**
  * 捕获运行函数的异常
@@ -136,24 +130,6 @@ const timeTaken = (fn, ...args) => {
   return r
 }
 
-/**
- * 缓存函数
- */
-const memorize = fn => {
-  if (fn.cache) return fn // 已经是缓存函数了，就直接返回
-  function cachedFn(...args) {
-    const cacheKey = JSON.stringify(args)
-    const cache = cachedFn.cache
-    if (cache.has(cacheKey)) {
-      return cache.get(cacheKey)
-    } else {
-      cache.set(cacheKey, fn(...args))
-      return cache.get(cacheKey)
-    }
-  }
-  cachedFn.cache = new Map()
-  return cachedFn
-}
 
 /**
  * 只 调用一次的函数
