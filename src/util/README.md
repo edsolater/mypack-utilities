@@ -9,38 +9,41 @@ class 种类：
 - **binaryUtil** 二元工具函数
 - **infinaryUtil** 无限元工具函数
 - **highOrderUtil** 高阶工具函数——需要传入 callback 函数的工具函数
-- **functionUtil** 函数包裹器——用于创造新函数的函数
+- **functionUtil** 函数包裹器(函数工厂)——用于创造新函数的函数
 - **judger** 返回布尔值的函数，通常用于鉴定
 
-| utilName                                        | class             | input(without configration)         | output         | 说明                                                         |
-| ----------------------------------------------- | ----------------- | ----------------------------------- | -------------- | ------------------------------------------------------------ |
-| [createRandom](./createRandom.ts)               | zeroUtil          |                                     | number         |                                                              |
-| [range](./range.ts)                             | zeroUtil          |                                     | number[]       |                                                              |
-| [all](./all.ts)                                 | unaryUtil judger  | Tar[]                               | boolean        |                                                              |
-| [drop](./drop.ts)                               | unaryUtil         | Tar[]                               | Tar[]          |                                                              |
-| [count](./count.ts)                             | unaryUtil         | Tar[]                               | number         |                                                              |
-| [shuffle](./shuffle.ts)                         | unaryUtil         | Tar[]                               | Tar[]          |                                                              |
-| [randomlyPluck](./randomlyPluck.ts)             | unaryUtil         | Tar[]                               | number         |                                                              |
-| [arrayClassify](./arrayClassify.ts)             | unaryUtil         | Tar[]                               | object         |                                                              |
-| [findIndexAll](./findIndexAll.ts)               | unaryUtil         | Tar[]                               | number[]       |                                                              |
-| [findAll](./findAll.ts)                         | unaryUtil         | Tar[]                               | Tar[]          |                                                              |
-| [allTheSame](./allTheSame.ts)                   | unaryUtil judger  | Tar[]                               | boolean        |                                                              |
-| [average](./average.ts)                         | unaryUtil         | number[]                            | number         |                                                              |
-| [toCase](./toCase.ts)                           | unaryUtil         | string                              | string         |                                                              |
-| [unflattenObject](./unflattenObject.ts)         | unaryUtil         | object                              | object         |                                                              |
-| [flattenObject](./flattenObject.ts)             | unaryUtil         | object                              | object         |                                                              |
-| [numberEqual](./numberEqual.ts)                 | binaryUtil judger | number, number                      | boolean        |                                                              |
-| [difference](./difference.ts)                   | binaryUtil        | Tar[], Tar[]                        | Tar[]          |                                                              |
-| [intersection](./intersection.ts)               | binaryUtil        | Tar[], Tar[]                        | Tar[]          |                                                              |
-| [union](./union.ts)                             | binaryUtil        | Tar[], Tar[]                        | Tar[]          |                                                              |
-| [forEachEntries](./forEachEntries.ts)           | binaryUtil        | object, ([key, value], index)=>void | void           | 只是个简写，（但不推荐使用。缺少灵活性）                     |
-| [map](./map.ts)                                 | highOrderUtil     | Tar[], (Tar,index)=>any             | Tar[]          |                                                              |
-| [beforeEach](./beforeEach.ts)(alias)            | sementicAlias     |                                     |                |                                                              |
-| [afterEach](./afterEach.ts)(alias)              | sementicAlias     |                                     |                |                                                              |
-| [convertMethodToUtil](./convertMethodToUtil.ts) | functionUtil      | method                              | Function       | 将 method 转为 Util，并在使用时多出来了个 target（操作目标） |
-| [convertUtilToMethod](./convertUtilToMethod.ts) | functionUtil      | util                                | Function       | 将 Util 转为 method，转换时需要手动传入个 target（操作目标） |
-| [pipeAsyncs](./pipeAsyncs.ts)                   | functionUtil      | ...AsyncFunction                    | AsyncFunction  |                                                              |
-| [pipe](./pipe.ts)                               | functionUtil      | ...Function                         | Function       |                                                              |
-| [negate](./negate.ts)                           | functionUtil      | ...judger                           | negatedJudger  | 反转 judger                                                  |
-| [memorize](./memorize.ts)                       | functionUtil      | util                                | cashedFunction | 附加缓存                                                     |
-| [once](./once.ts)                               | functionUtil      | util                                | onceFunction   | 新函数只能调用一次                                           |
+| utilName                                              | class             | input(without configuration)        | output         | 说明                                                         |
+| ----------------------------------------------------- | ----------------- | ----------------------------------- | -------------- | ------------------------------------------------------------ |
+| [createRandom](./createRandom.ts)                     | zeroUtil          |                                     | number         |                                                              |
+| [range](./range.ts)                                   | zeroUtil          |                                     | number[]       |                                                              |
+| [all](./all.ts)                                       | unaryUtil judger  | Tar[]                               | boolean        |                                                              |
+| [drop](./drop.ts)                                     | unaryUtil         | Tar[]                               | Tar[]          |                                                              |
+| [count](./count.ts)                                   | unaryUtil         | Tar[]                               | number         |                                                              |
+| [shuffle](./shuffle.ts)                               | unaryUtil         | Tar[]                               | Tar[]          |                                                              |
+| [randomlyPluck](./randomlyPluck.ts)                   | unaryUtil         | Tar[]                               | number         |                                                              |
+| [arrayClassify](./arrayClassify.ts)                   | unaryUtil         | Tar[]                               | object         |                                                              |
+| [findIndexAll](./findIndexAll.ts)                     | unaryUtil         | Tar[]                               | number[]       |                                                              |
+| [findAll](./findAll.ts)                               | unaryUtil         | Tar[]                               | Tar[]          |                                                              |
+| [allTheSame](./allTheSame.ts)                         | unaryUtil judger  | Tar[]                               | boolean        |                                                              |
+| [average](./average.ts)                               | unaryUtil         | number[]                            | number         |                                                              |
+| [toCase](./toCase.ts)                                 | unaryUtil         | string                              | string         |                                                              |
+| [unflattenObject](./unflattenObject.ts)               | unaryUtil         | object                              | object         |                                                              |
+| [flattenObject](./flattenObject.ts)                   | unaryUtil         | object                              | object         |                                                              |
+| [getObjectValueWithPath](./getObjectValueWithPath.ts) | unaryUtil         | object                              | unknown        | 获取对象的属性值（按路径）                                   |
+| [numberEqual](./numberEqual.ts)                       | binaryUtil judger | number, number                      | boolean        |                                                              |
+| [sorterWithPropPath](./sorterWithPropPath.ts)         | binaryUtil sorter | object, object                      | number         | 专用于生成 Array.prototype.sort 的 sorter                    |
+| [difference](./difference.ts)                         | binaryUtil        | Tar[], Tar[]                        | Tar[]          |                                                              |
+| [intersection](./intersection.ts)                     | binaryUtil        | Tar[], Tar[]                        | Tar[]          |                                                              |
+| [union](./union.ts)                                   | binaryUtil        | Tar[], Tar[]                        | Tar[]          |                                                              |
+| [forEachEntries](./forEachEntries.ts)                 | binaryUtil        | object, ([key, value], index)=>void | void           | 只是个简写，（但不推荐使用。缺少灵活性）                     |
+| [map](./map.ts)                                       | highOrderUtil     | Tar[], (Tar,index)=>any             | Tar[]          |                                                              |
+| [beforeEach](./beforeEach.ts)(alias)                  | sementicAlias     |                                     |                |                                                              |
+| [afterEach](./afterEach.ts)(alias)                    | sementicAlias     |                                     |                |                                                              |
+| [convertMethodToUtil](./convertMethodToUtil.ts)       | functionUtil      | method                              | Function       | 将 method 转为 Util，并在使用时多出来了个 target（操作目标） |
+| [convertUtilToMethod](./convertUtilToMethod.ts)       | functionUtil      | util                                | Function       | 将 Util 转为 method，转换时需要手动传入个 target（操作目标） |
+| [pipeAsyncs](./pipeAsyncs.ts)                         | functionUtil      | ...AsyncFunction                    | AsyncFunction  |                                                              |
+| [pipe](./pipe.ts)                                     | functionUtil      | ...Function                         | Function       |                                                              |
+| [negate](./negate.ts)                                 | functionUtil      | ...judger                           | negatedJudger  | 反转 judger                                                  |
+| [memorize](./memorize.ts)                             | functionUtil      | util                                | cashedFunction | 附加缓存                                                     |
+| [once](./once.ts)                                     | functionUtil      | util                                | onceFunction   | 新函数只能调用一次                                           |
+| [fixParam](./fixParam.ts)                             | functionUtil      | util                                | newFunction    | 返回固定参数的新函数                                         |

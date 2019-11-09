@@ -41,7 +41,7 @@ type Unshift<T extends any[], Item> = ((first: Item, ...rest: T) => any) extends
  */
 type Equals<T, S> = [T] extends [S] ? ([S] extends [T] ? true : false) : false
 
-type Range<N, T extends number[] = []> = {
+export type Range<N, T extends number[] = []> = {
   0: T
   1: Range<N, Unshift<T, GetLength<T>>>
 }[Equals<GetLength<Tail<T>>, N> extends true ? 0 : 1]
