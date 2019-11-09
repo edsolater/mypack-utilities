@@ -18,7 +18,7 @@ type GetLength<T extends any[]> = T['length']
 /**
  * Returns all but the first item's type in a tuple/array
  */
-type Tail<T extends any[]> = ((...args: T) => any) extends ((
+export type Tail<T extends any[]> = ((...args: T) => any) extends ((
   head: any,
   ...tail: infer R
 ) => any)
