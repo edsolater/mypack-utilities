@@ -30,7 +30,9 @@ class 种类：
 | [unflattenObject](./unflattenObject.ts)               | unaryUtil         | object                              | object         |                                                              |
 | [flattenObject](./flattenObject.ts)                   | unaryUtil         | object                              | object         |                                                              |
 | [getObjectValueWithPath](./getObjectValueWithPath.ts) | unaryUtil         | object                              | unknown        | 获取对象的属性值（按路径）                                   |
-| [numberEqual](./numberEqual.ts)                       | binaryUtil judger | number, number                      | boolean        |                                                              |
+| [isEqual](./isEqual.ts)                               | binaryUtil judger | Tar, Tar                            | boolean        | 判断两个值是否精确相等（使用 Object.is）                     |
+| [isEqualDeep](./isEqualDeep.ts)                       | binaryUtil judger | Tar, Tar                            | boolean        | 递归地判断值是否相等                                         |
+| [isEqualApproximately](./isEqualApproximately.ts)     | binaryUtil judger | number, number                      | boolean        | 判断两个数字是否在误差范围内相等                             |
 | [sorterWithPropPath](./sorterWithPropPath.ts)         | binaryUtil sorter | object, object                      | number         | 专用于生成 Array.prototype.sort 的 sorter                    |
 | [difference](./difference.ts)                         | binaryUtil        | Tar[], Tar[]                        | Tar[]          |                                                              |
 | [intersection](./intersection.ts)                     | binaryUtil        | Tar[], Tar[]                        | Tar[]          |                                                              |

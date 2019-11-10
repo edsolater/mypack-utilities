@@ -29,7 +29,7 @@ export const toCase = (
   } else if (formatType === 'white space') {
     return Array.from(wordArr)
       .map(word => word.toLowerCase())
-      .join('')
+      .join(' ')
   } else if (formatType === 'kebab-case') {
     return Array.from(wordArr)
       .map(word => word.toLowerCase())
