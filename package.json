@@ -29,5 +29,14 @@
     "babel-jest": "^24.9.0",
     "jest": "^24.9.0",
     "ts-jest": "^24.1.0"
+  },
+  "dependenciesComments": {
+    "@babel/core": "babel（代码转换器）核心",
+    "@babel/preset-env": "babel环境配置",
+    "@babel/preset-typescript": "使babel能理解typescript",
+    "@types/jest": "jest代码自动补全机制",
+    "babel-jest": "连接babel与jest",
+    "jest": "jest（测试工具）核心",
+    "ts-jest": "使jest能理解typescript"
   }
 }

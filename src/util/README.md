@@ -8,9 +8,9 @@ class 种类：
 - **unaryUtil** 一元工具函数
 - **binaryUtil** 二元工具函数
 - **infinaryUtil** 无限元工具函数
-- **highOrderUtil** 高阶工具函数——需要传入 callback 函数的工具函数
-- **functionUtil** 函数包裹器(函数工厂)——用于创造新函数的函数
-- **judger** 返回布尔值的函数，通常用于鉴定
+- **highOrderUtil** 高阶工具函数 —— 需要传入 callback 函数的工具函数
+- **functionUtil** 函数包裹器(函数工厂) —— 用于创造新函数的函数
+- **judger** 判断子 —— 返回布尔值的函数，通常用于鉴定
 
 | utilName                                              | class             | input(without configuration)        | output         | 说明                                                         |
 | ----------------------------------------------------- | ----------------- | ----------------------------------- | -------------- | ------------------------------------------------------------ |
@@ -24,7 +24,7 @@ class 种类：
 | [arrayClassify](./arrayClassify.ts)                   | unaryUtil         | Tar[]                               | object         |                                                              |
 | [findIndexAll](./findIndexAll.ts)                     | unaryUtil         | Tar[]                               | number[]       |                                                              |
 | [findAll](./findAll.ts)                               | unaryUtil         | Tar[]                               | Tar[]          |                                                              |
-| [allTheSame](./allTheSame.ts)                         | unaryUtil judger  | Tar[]                               | boolean        |                                                              |
+| [allTheSame](./allTheSame.ts)                         | unaryUtil judger  | Tar[]                               | boolean        | 判断一整个数组的元素是否完全相同                             |
 | [average](./average.ts)                               | unaryUtil         | number[]                            | number         |                                                              |
 | [toCase](./toCase.ts)                                 | unaryUtil         | string                              | string         |                                                              |
 | [unflattenObject](./unflattenObject.ts)               | unaryUtil         | object                              | object         |                                                              |
@@ -49,3 +49,4 @@ class 种类：
 | [memorize](./memorize.ts)                             | functionUtil      | util                                | cashedFunction | 附加缓存                                                     |
 | [once](./once.ts)                                     | functionUtil      | util                                | onceFunction   | 新函数只能调用一次                                           |
 | [fixParam](./fixParam.ts)                             | functionUtil      | util                                | newFunction    | 返回固定参数的新函数                                         |
+| [fixConfig](./fixConfig.ts)                           | functionUtil      | util                                | newFunction    | 返回已固定配置的新 Util                                      |

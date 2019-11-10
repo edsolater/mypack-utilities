@@ -1,4 +1,4 @@
-import { Mapper, Compatator } from './#package_type'
+import { Mapper, Comparator } from './#package_type'
 
 /**
  * 求两数组的交集
@@ -13,7 +13,7 @@ export const intersection = <T1, T2>(
      * 预处理器
      */
     mapper?: Mapper
-    comparator?: Compatator
+    comparator?: Comparator
   } = {}
 ): (T1 & T2)[] => {
   const { mapper, comparator } = config

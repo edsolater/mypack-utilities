@@ -1,4 +1,4 @@
-import { Compatator } from './#package_type'
+import { Comparator } from './#package_type'
 import { defaultCompatator } from './#package_defaultFunction'
 
 /**
@@ -14,7 +14,7 @@ export const findIndexAll = <T>(
     /**
      * 用于比较的函数
      */
-    compatator?: Compatator
+    compatator?: Comparator
   } = { compatator: defaultCompatator }
 ): number[] => {
   const { item, compatator } = config
