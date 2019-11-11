@@ -1,4 +1,4 @@
-import { Util, Range } from './#package_type'
+import { Util } from './#package_type'
 import { toCase } from './toCase'
 /**
  * 固定函数的部分参数
