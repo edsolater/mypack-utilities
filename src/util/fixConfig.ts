@@ -1,13 +1,11 @@
 import { Util } from './#package_type'
-import { isEqualApproximately } from './isEqualApproximately'
 
 export const fixConfig = <U extends Util>(
   util: U,
   utilLevel: number,
-  configuration: Parameters<U>[typeof utilLevel]
+  config?: Parameters<U>[typeof utilLevel]
 ) => (...args: Parameters<U>) => {
-  args[utilLevel] = configuration
+  args[utilLevel] = { ...(args[utilLevel] || {}), ...config }
   return util(...args)
 }
-const a = fixConfig(isEqualApproximately, 2, { errorRange: 3 })
 TODO

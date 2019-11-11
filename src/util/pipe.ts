@@ -61,5 +61,5 @@ export const pipe: {
   ): (...args: Inputs) => Return
   <T extends Tuple<any, 10>>(...fns: T): (
     ...args: Parameters<FirstType<T>>
-  ) => ReturnType<LastType<T>> // 缺少对中间过程的感知
+  ) => ReturnType<LastType<T>>
 } = (...fns: Function[]) => (...args) => fns.reduce((chain, fn) => fn(chain(...args)))
