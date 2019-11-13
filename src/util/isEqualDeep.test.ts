@@ -16,3 +16,4 @@ test(`not deep equal`, () => {
   expect(isEqualDeep([1, 2], [3, 4])).toBe(false)
   expect(isEqualDeep({ a: { b: { c: 'hello' } } }, {})).toBe(false)
 })
+
