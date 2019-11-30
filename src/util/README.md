@@ -31,6 +31,7 @@ class 种类：
 |          | [flattenObject](./flattenObject.ts)                   | unaryUtil         | object                    | object         |                                                              |
 | ✔        | [getObjectValueWithPath](./getObjectValueWithPath.ts) | unaryUtil         | object                    | unknown        | 获取对象的属性值（按路径）                                   |
 |          | [repeat](./repeat.ts)                                 | unaryUtil         | Tar                       | Tar[]          | 重复元素                                                     |
+|          | [filter](./filter.ts)                                 | unaryUtil         | Tar                       | Tar            | 将参数流入接下来的函数们                                     |
 |          | [isEqual](./isEqual.ts)                               | binaryUtil judger | Tar, Tar                  | boolean        | 判断两个值是否精确相等（使用 Object.is）                     |
 | ✔        | [isEqualDeep](./isEqualDeep.ts)                       | binaryUtil judger | Tar, Tar                  | boolean        | 递归地判断值是否相等                                         |
 | ✔        | [isEqualApproximately](./isEqualApproximately.ts)     | binaryUtil judger | number, number            | boolean        | 判断两个数字是否在误差范围内相等                             |
